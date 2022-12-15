@@ -1,7 +1,7 @@
 # ubuntu test
 
 
-# mac test 해볼게요 
+# mac test 해볼게요 0
 import sys
 n = int(sys.stdin.readline())
 arr = [int(sys.stdin.readline()) for _ in range(n)]
