@@ -7,6 +7,7 @@
 # 그럼 각종으 그루수 / 전체 나무수 * 100 
 
 import sys
+
 arr = {}
 cnt = 0
 while True:
