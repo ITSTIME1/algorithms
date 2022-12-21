@@ -36,3 +36,16 @@ if len(string) != len(ans):
 else:
 	print(ans)
 
+
+
+# replace 함수를 사용하면 왼쪽부터 해당하는 문자열을 찾아서 치횐해준다
+# board = input()
+
+# board = board.replace("XXXX", "AAAA")
+# board = board.replace("XX", "BB")
+
+# if 'X' in board:
+#     print(-1)
+    
+# else:
+#     print(board)
