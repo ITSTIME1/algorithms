@@ -110,12 +110,13 @@ qt_time = (int(qtream[:2]) * 60) + int(qtream[3:])
 
 
 # test for mac
+# test2 for mac
 
 start_dic = {}
 end_dic = {}
 while True:
 	try:
-		input_time, name = input().split()
+		input_time, name = sys.stdin.readline().split()
 		check_time = (int(input_time[:2]) * 60) + int(input_time[3:])
 		if check_time <= st_time:
 			start_dic[name] = check_time
