@@ -5,8 +5,6 @@
 # 단순 구현문제는 아닌거 같은데
 # 너무 오래걸리게 푼것같다
 
-# mac test push to github
-
 import sys
 x = int(sys.stdin.readline())
 
