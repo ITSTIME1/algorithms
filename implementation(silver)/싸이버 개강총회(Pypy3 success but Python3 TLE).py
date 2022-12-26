@@ -109,6 +109,8 @@ qt_time = (int(qtream[:2]) * 60) + int(qtream[3:])
 # print("입력시간 : " + str(st_time) + ", " + str(et_time) + ", " + str(qt_time))
 
 
+# test for mac
+
 start_dic = {}
 end_dic = {}
 while True:
