@@ -13,6 +13,7 @@
 import heapq
 import sys
 
+# MaxHeap
 # 1. heap insert
 def insert(heap, num):
 	# heap list 에 마지막 값을 넣어주고
