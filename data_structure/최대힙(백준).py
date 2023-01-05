@@ -4,9 +4,10 @@ import sys
 
 
 def push_swap(last_value):
+	# 부모 노드와 자식 노드 간의 swap 을 이루어야 가장 큰 노드가 가장 위로 올라 갈 수 있음.
 	heap[last_value], heap[last_value//2] = heap[last_value//2], heap[last_value]
 
-def delete_swap(first, last):
+def basic_swap(first, last):
 	heap[first], heap[last] = heap[last], heap[first]
 
 def heappush(heap, value):
@@ -24,50 +25,39 @@ def heappush(heap, value):
 		else:
 			break
 
-# 먼저 루트 노드의 값을 반환한다음에
-# 다시 한번 재정렬이 이루어져야 하므로
-# 말단 노드가 루트 노드에 와있기 때문에
-# 만약 최대힙이라면
-# 자식 노드들 중 현재 나보다 큰 값이 있으면 swap 해주어야 한다.
-def maxHeapify(heap, i):
-	# left value and right value
-	heap_n = len(heap)-1
-	# 1
-	left_value = i*2
-	# 2
-	right_value = (i*2)+1 
-	# 3
-	largest = i
-	# 1
-	if left_value <= heap_n and heap[left_value] > heap[largest]:
-		largest = left_value
-	else:
-		largest = i
-
-	if right_value <= heap_n and heap[right_value] > heap[largest]:
-		largest = right_value
-
-	if largest != i:
-		delete_swap(largest, i)
-		maxHeapify(heap, largest)
+def maxHeapify(prioirity, parent, last_value):
+	while prioirity < last_value:
+		if prioirity < last_value and heap[prioirity] > heap[parent]:
+			basic_swap(parent, prioirity)
+			parent = prioirity
+			# index error shit
+			# ==> 여기서부터 고쳐야됨...
+		if prioirity < last_value and heap[prioirity+1] > heap[parent]:
+			basic_swap(parent, prioirity+1)
+			parent = prioirity + 1
+			
+		prioirity *= 2
 
 
-def heapremove(heap): 
-	# [0, 2, 1]
-	# [0, 1]
-	last_index = len(heap)-1
-	# 루트노드와 바꿔주고
-	delete_swap(1, last_index)
-	# 그럼 바꾼 가장 말단 노드가
-	# 최상단 노드(max or min)
+def heapdelete(heap):
+	# [0, 3, 2, 1]
+	last_value = len(heap)-1
+	prioirity, parent = 2, 1
+	basic_swap(1, last_value)
+	# [0, 1, 2, 3]
 	popped = heap.pop()
-	# [0, 1]
-	# heapify = 힙의 성질을 맞추기 위해서 트리를 재정렬
-	# [0, 1] 에서 바꿔버리기 때문.
-	# 여기서 시간초과 난다
-	for i in range(len(heap)//2, 0, -1):
-		maxHeapify(heap, i)
+	# [0, 1, 2]
+	maxHeapify(prioirity, parent, last_value)
+
 	return popped
+
+
+# 1. 0이면 출력
+# 2. 0이 아니면 배열의 추가하는 건데
+# 3. 배열의 추가할 때 중요한건 최대힙을 구한다고 한다면
+# 4. 부모노드의 값을 계속 찾아 올라가면서
+# 5. parent < child 상태라면 지속적으로 바꾸어 주어야 한다는 것이다.
+# 6. 그렇게 된다면 가장 최상위 부모 노드엔 가장 큰 값이 올라가져 있을것이므로 index // 2 = parent
 
 
 n = int(sys.stdin.readline().strip())
@@ -80,5 +70,5 @@ for _ in range(n):
 		if len(heap) == 1:
 			print(0)
 		else:
-			print(heapremove(heap))
+			print(heapdelete(heap))
 
