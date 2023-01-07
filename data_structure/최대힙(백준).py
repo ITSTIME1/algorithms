@@ -3,7 +3,7 @@
 import sys
 
 
-def push_swap(last_value):
+def parent_swap(last_value):
 	# 부모 노드와 자식 노드 간의 swap 을 이루어야 가장 큰 노드가 가장 위로 올라 갈 수 있음.
 	heap[last_value], heap[last_value//2] = heap[last_value//2], heap[last_value]
 
@@ -19,38 +19,47 @@ def heappush(heap, value):
 		# 자식노드가 부모노드보다 더 크다면 swapping 한다
 		# swap()
 		if heap[last_value] > heap[last_value//2]:
-			push_swap(last_value)
+			parent_swap(last_value)
 			# 부모 노드의 인덱스로 바꿔준다
 			last_value //= 2
 		else:
 			break
 
-def maxHeapify(prioirity, parent, last_value):
-	while prioirity < last_value:
-		if prioirity < last_value and heap[prioirity] > heap[parent]:
-			basic_swap(parent, prioirity)
-			parent = prioirity
-			# index error shit
-			# ==> 여기서부터 고쳐야됨...
-		if prioirity < last_value and heap[prioirity+1] > heap[parent]:
-			basic_swap(parent, prioirity+1)
-			parent = prioirity + 1
-			
-		prioirity *= 2
+
+def check_priority(priority):
+	if priority < len(heap)-1 and heap[priority] < heap[priority + 1]:
+		return priority + 1
+	else:
+		return priority
+
+
+def maxHeapify(index):
+	left = index * 2
+	right = (index*2) + 1
+
+	largest = index
+	if left <= len(heap)-1 and heap[left] > heap[largest]:
+		largest = left
+
+	else:
+		largest = index
+
+	if right <= len(heap)-1 and heap[right] > heap[largest]:
+		largest = right
+
+	if largest != index:
+		basic_swap(index, largest)
+		maxHeapify(largest)
+
 
 
 def heapdelete(heap):
-	# [0, 3, 2, 1]
-	last_value = len(heap)-1
-	prioirity, parent = 2, 1
-	basic_swap(1, last_value)
-	# [0, 1, 2, 3]
-	popped = heap.pop()
-	# [0, 1, 2]
-	maxHeapify(prioirity, parent, last_value)
-
-	return popped
-
+	if len(heap) == 1:
+		return 0
+	basic_swap(1, len(heap)-1)
+	maxVal = heap.pop()
+	maxHeapify(1)
+	return maxVal
 
 # 1. 0이면 출력
 # 2. 0이 아니면 배열의 추가하는 건데
