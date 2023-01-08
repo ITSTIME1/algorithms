@@ -43,31 +43,25 @@ def check_priority(priority):
 # 3 .무엇이 문제일까
 
 def maxHeapify(index):
-	left = index * 2
-	right = (index * 2) + 1
+	child = 2
+	parent = index
 
-	largest = index
-	if left <= len(heap)-1 and heap[left] > heap[largest]:
-		largest = left
-
-	else:
-		largest = index
-
-	if right <= len(heap)-1 and heap[right] > heap[largest]:
-		largest = right
-
-	# largest == index 인 상황은
-	# 같거나 작을때 그럴땐 swap 안해도 되니까
-	if largest != index:
-		basic_swap(index, largest)
-		maxHeapify(largest)
-
+	while child <= len(heap)-1:
+		get_priority = check_priority(child)
+		if heap[get_priority] > heap[parent]:
+			basic_swap(parent, get_priority)
+			parent = get_priority
+			child = get_priority * 2
+		else:
+			break
 
 
 def heapdelete(heap):
 	if len(heap) == 1:
 		return 0
+	#[0, 2, 1]
 	basic_swap(1, len(heap)-1)
+	# maxVal을 뽑아주고
 	maxVal = heap.pop()
 	maxHeapify(1)
 	return maxVal
