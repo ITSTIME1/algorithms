@@ -45,6 +45,7 @@ def insert(heap, num):
 
 def delete(heap):
 	# root node
+	# [0, 3, 2, 1]
 	maxVal = heap[1]
 	tmp = heap.pop()
 
