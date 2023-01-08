@@ -1,5 +1,6 @@
 # 문제분석
 # 시계 방향으로 푸는건데
+# 시뮬레이션이네
 
 n = int(input())
 find = int(input())
