@@ -16,3 +16,6 @@ print(len(set(list(map(int, input().split()))) ^ set(list(map(int, input().split
 # brr = set(list(map(int, input().split())))
 
 # print(len(arr ^ brr))
+
+
+

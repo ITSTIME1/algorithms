@@ -1,45 +1,83 @@
+# 다시 짜야된다
+
 # 문제분석
 
-# 세가지 연산을 수행할 수 있는데
+# 첫번째 연산은 = 첫번재 원소를 뽑아내는거
+# 두번째 연산은 = 왼쪽으로 한칸 이동시키는거 -> 첫번째 원소를 빼서 마지막으로 넣어주는 연산
+# 세번째 연산은 = 오른쪽 마지막 원소를 빼서 왼쪽 맨 앞으로 넣어준다.
 
-# 첫번째로 첫번째 원소를 뽑는 과정
+from collections import deque
+import itertools
 
-# 두번째는 왼쪽으로 한 칸씩 이동하는 과정
+n, m = map(int, input().split())
+m_list = list(map(int, input().split()))
 
-# 세번째는 오른쪽으로 이동시키는 과정 
+num = deque()
+for i in range(n):
+	num.append(i)
 
-# 만약 첫번째 과정이라면 deque를 사용했을시
-# 가장 첫번째 원소를 뽑아낼 수 있고
-# 그럼 첫번재 원소를 뽑아낸 자리가 k 라면 k+1 => k 가 되기 때문에
-# 왼쪽으로 한칸씩 이동하게 된다.
+arr = deque()
+
+for i in range(n):
+	arr.append([i, i+1])
+# m_list 를 가지고 오면서?
+
+def correct(arr):
+	arr.popleft()
+	num.popleft()
+
+def left_cal(arr, find, what):
+	global ans
+	for i in range(what):
+		c = arr.popleft()
+		arr.append(c)
+		ans += 1
+
+	if arr[0][1] == find:
+		correct(arr)
+
+def right_cal(arr, find, what):
+	global ans
+	for i in range(what):
+		c = arr.pop()
+		arr.appendleft(c)
+		ans += 1
+
+	if arr[0][1] == find:
+		correct(arr)
 
 
-# 두번째 방법은 왼쪽으로 한칸 이동시키는 것이다
-# 가장 앞에있는 원소가 빠지면서 첫번째를 제외한 나머지 원소들은 a2~ak 는 한칸씩 앞으로 땡겨지게되고
-# a1은 ak의 다음 원소가 된다. -> 결국에 리스트 원소의 개수엔 영향을 끼치지 않는다.
+		
+ans = 0
+for i in range(len(m_list)):
+	# [1, 2, 3]
+	find = m_list[i]
+	# [0, 1]
+	# [1, 2]
+	# [2, 3]
+	# [3, 4]
+	if arr[0][1] == find:
+		correct(arr)
+		continue
+	else:
+		# check = index를 찾는거
+		check = 0
+		for i in range(len(arr)):
+			if arr[i][1] == find:
+				check = i 
+		# 각각의 수의 개수가 얼마나 남았는지 보고
+		# [0, 1, 2, 3, 4, 5, 6, 7]
+		# [1, 2, 3, 4, 5, 6, 7, 8]
+		leftVal = len(list(itertools.islice(num, 0, check)))
+		rightVal = len(list(itertools.islice(num, check, len(num))))
+		# 왼쪽으로 갈지 오른쪽으로 갈지
+		what = min(leftVal, rightVal)
+		if what == leftVal:
+			left_cal(arr, find, what)
+		else:
+			right_cal(arr, find, what)
 
-# 세번재 방법은 오른쪽으로 한칸 이동시키는 것인데
-# 이 방법은 가장 오른쪽에 있는 원소가 가장 앞 원소로 온다는 것이다.
-# 이렇게 되면 가장 앞의 원소가 가장 뒤에 원소가 된다.
 
-[1,2,3,4,5,6,7,8,9,10]
-
-# 그리디 스럽긴한데
-
-# 그럼 양옆의 있는 숫자의 개수가 같다면 어디로 가야할까
-# 최소값이니까 우선 양옆의 수가 더 작은쪽으로 가는게좋다.
-# 뭔가 애매한데
-
-
-# 무슨 연산을 하는진 주어지지 않았어
-# 오케이 이렇게 하면 되겠다
-
-# 우선 그 수가 첫번째에 있다면 뽑는거니까 (1번 연산)
-# 만약 그 수가 첫번째에 있지 않다면
-# 구하고자 하는 수의 위치가 어디인지 파악하고 첫번째로부터 왼쪽, 오른쪽 중
-# min() 함수를 통해서 더 적은 쪽으로 갈 수 있는 방법을 리턴받고
-# l, r 인지에 따라서
-# list[0] = 2, 9, 5 구하고자 하는 값까지 구한 방향의 회전 값을 구하고
-# 이때 회전 할때마다 2, 3번의 연산을 진행했다면 ans += 1 씩 카운트해주면
-# ans 답이 나올 수 있다.
-# 첫번째 값까지 왔다면 해당 값을 뽑아준다.
+		# arr == [0, 1, 2, 3, 4, 5]
+		# m_list = [3, 4, 5, 6]
+print(ans)
