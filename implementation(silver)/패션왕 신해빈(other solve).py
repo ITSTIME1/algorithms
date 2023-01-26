@@ -20,7 +20,7 @@ for _ in range(T):
         if clothes.get(k) == None:
             clothes[k] = set()
         clothes[k].add(v)
-       
+      
     count = 1
     for key in clothes.keys():
     	count *= len(clothes[key]) + 1
