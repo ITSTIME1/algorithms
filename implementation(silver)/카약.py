@@ -76,7 +76,11 @@
 # 그럼 같은 등수기 때문에
 # 그 이전 등수랑 똑같은 등수를 딕셔너리에 등록해준다
 
+<<<<<<< HEAD
 # mac test
+=======
+
+>>>>>>> b03b7df27cf1567f725ddd26fd3af928573d7401
 r, c = map(int, input().split())
 
 # 십진수 체크, 거리
@@ -86,9 +90,15 @@ def decimal(kac):
 		if kac[i].isdigit():
 			decimal = [kac[i], len(kac[i:])-2]
 	return decimal
+<<<<<<< HEAD
 
 
 
+=======
+
+
+
+>>>>>>> b03b7df27cf1567f725ddd26fd3af928573d7401
 dic = {}
 for i in range(r):
 	kac = input()
@@ -126,4 +136,8 @@ for i in sorted_dic:
 
 # 뭔가 이거 브루트 포스로 찾아야하는 느낌인데
 # 난 진짜 단순하게 구현한거고
+<<<<<<< HEAD
 # ㄷ다시 풀어봐야 겠다
+=======
+# ㄷ다시 풀어봐야 겠다
+>>>>>>> b03b7df27cf1567f725ddd26fd3af928573d7401
