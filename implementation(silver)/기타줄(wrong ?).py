@@ -80,6 +80,7 @@ while n > 0:
 			break
 		cnt += p
 		n-=6
+		continue
 	else:
 		single_price = (s*n)+cnt
 		package_price = cnt + p
