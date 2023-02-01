@@ -46,6 +46,7 @@ def recursion(arr, val, index):
 		return ans
 	else:
 		level[index] -= cnt
+		print(level)
 		ans += cnt
 		recursion(arr, level[index], index)
 
@@ -55,3 +56,6 @@ for i in range(n):
 	lastVal = level[i]
 	recursion(level[i+1:], lastVal, i)
 print(ans)
+# 5
+# 9 8 7 6 5 -> 반례
+# 되는줄 알았는데 생각해보니까 틀리네
