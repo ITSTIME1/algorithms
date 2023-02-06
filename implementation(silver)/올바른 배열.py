@@ -2,8 +2,6 @@ n = int(input())
 
 arr = [int(input()) for _ in range(n)]
 
-arr.sort()
-
 dic = {}
 for i in arr:
 	dic[i] = 0
