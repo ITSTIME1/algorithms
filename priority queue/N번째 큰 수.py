@@ -9,7 +9,6 @@ input = sys.stdin.readline
 n = int(input())
 
 stack = deque([])
-print(sys.getsizeof(stack))
 for i in range(n):
 	num = list(map(int, input().split()))
 	num.sort(reverse = True)
