@@ -59,6 +59,9 @@ def postorder(data):
 
 
 # 처음 루트는 무조건 a라고 하니까
+# 재귀를 이해하는게 가장 중요할거 같네
+# 아마 내가 사용하는 방법은 클래스를 이용해서 하는거니까
+# 클래스를 이용해서 하는걸 한번 해봐야겠따
 
 preorder('A')
 inorder('A')
@@ -68,5 +71,12 @@ postorder('A')
 print("".join(pre_list), end = "\n")
 print("".join(in_list), end = "\n")
 print("".join(post_list))
+
+
+# 파이썬으로 트리를 이렇게 표현이 가능하구나
+# 순회도 위와 같은 방식으로 하면되고
+# 구지 노드를 만들어서 하는것보다 편리한거같은데
+# none == 여기서 . 와 같은 거네
+
 
 
