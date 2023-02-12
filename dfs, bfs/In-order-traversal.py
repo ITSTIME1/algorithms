@@ -36,10 +36,18 @@ class Node:
 			queue.put(self.leftChild)
 			queue.put(self.rightChild)
 
-
 		while queue.empty() is False:
 			queue.get().insert(data)
 
+
+	# 재귀의 이해만 가지고 있다면 충분히 보이는 함수.
+	def inorderTraversal(self, root):
+       ret = []
+       if root:
+           ret = self.inorderTraversal(root.leftChild)
+           ret.append(root.data)
+           ret = ret + self.inorderTraversal(root.rightChild)
+       return ret
 	# 해당 함수 코드를 이해하기 위해서 선행되어야 될 지식은
 	# 재귀의 호출방식과 호출되었을때 어떻게 쌓이고 사라지는지의 대한 이미지가 그려져야 한다.
 	# 그럼 먼저 설명을해보자면 이건 node를 수동적으로 입히는 코드기 때문에
@@ -110,3 +118,8 @@ class Node:
 	# 그럼 밑단 노드가 없으면 다시 돌아게 되는것이다.
 
 	# 이런식으로 함수가 완성이된다. 
+
+
+
+	# 트리를 처음 공부해보며 느낀점 = 트리는 그리자..
+	
