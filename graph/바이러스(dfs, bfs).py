@@ -12,19 +12,19 @@ e = int(input())
 
 # 1번 컴퓨터가 바이러스에 걸린다고 했으니까
 # 1번 노드부터 시작한다
-# def bfs(graph, root):
+def bfs(graph, root):
 
-#     visited = set()
-#     queue = deque([root])
-#     visited.add(root)
+    visited = set()
+    queue = deque([str(root)])
+    visited.add(str(root))
 
-#     while queue:
-#         vertex = queue.popleft()
-#         for neighbour in graph[str(vertex)]:
-#             if neighbour not in visited:
-#             	visited.add(str(neighbour))
-#             	queue.append(neighbour)
-#     return visited
+    while queue:
+        vertex = queue.popleft()
+        for neighbour in graph[str(vertex)]:
+            if str(neighbour) not in visited:
+            	visited.add(str(neighbour))
+            	queue.append(str(neighbour))
+    return visited
 
 def dfs(graph, start, visited=None):
     # 처음엔 none 이니까 visited 를 생성 하고
@@ -60,5 +60,6 @@ for i in range(e):
 	graph[str(f)].append(s)
 	graph[str(s)].append(f)
 
-a = dfs(graph, "1")
+# a = dfs(graph, "1")
+a = bfs(graph, "1")
 print(len(a)-1)
