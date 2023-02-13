@@ -76,7 +76,7 @@ class Graph:
 		# to print DFS traversal
 		self.DFSUtil(v, visited)
 
-	
+
     def DFS(self):
         # create a set to store all visited vertices
         visited = set()
@@ -95,6 +95,9 @@ g.addEdge(2, 3)
 g.addEdge(3, 3)
 
 # 0, 1, 2, 3
+# 첫ㄱ dfs 함수는 루트를 정해주어야 탐색을 할 수 있는데
+# 루트를 주어지지 않고도 방문 되어지지 않는 노드를 기준으로 탐색을 시작하기 때문에
+
 g.DFS(0)
 print()
 print(g.graph)
