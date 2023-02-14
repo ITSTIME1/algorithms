@@ -35,6 +35,22 @@ def bfs(graph, root):
                 queue.append(neighbour)
 
 
+def bfs(graph, root):
+    visited = set()
+
+    queue = deque([str(root)])
+    visited.add(str(root))
+
+    while queue:
+        vertex = queue.popleft()
+
+        for v in graph[str(vertex)]:
+            if str(v) not in visited:
+                visited.add(str(v))
+                queue.append(str(v))
+    return visited
+
+
 if __name__ == '__main__':
     graph = {0: [1, 2], 1: [2], 2: [3], 3: [1, 2]}
     print("Following is Breadth First Traversal: ")
