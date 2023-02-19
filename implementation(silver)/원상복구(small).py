@@ -35,9 +35,10 @@ arr = [0] * n
 while k > 0:
 	for i in range(n):
 		# 몇번째 위치에 i번째 카드값을 놓는다는 소리인데 반대로 해석했네 썅
-		
+
 		arr[di[i]-1] = si[i]
 	# si 를 교체해주고
+		print(arr)
 	si = arr
 	arr = [0] * n
 	k-=1
