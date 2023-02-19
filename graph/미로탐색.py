@@ -1,14 +1,27 @@
+<<<<<<< HEAD
+# 문제분석
+
+=======
 # DFS 사용, 런타임 에러 발생
+>>>>>>> 94dbbe1a8364640ea245c7170a3c16422dc021f1
 import sys
 import heapq
 from collections import deque, Counter
 from itertools import permutations, product, combinations, combinations_with_replacement
 input = sys.stdin.readline
+<<<<<<< HEAD
+
+=======
 sys.setrecursionlimit(10**6)
+>>>>>>> 94dbbe1a8364640ea245c7170a3c16422dc021f1
 
 n, m = map(int, input().split())
 graph = [list(map(int, input().strip())) for _ in range(n)]
 
+<<<<<<< HEAD
+
+arr = [input().strip() for _ in range(n)]
+=======
 # 북 서 남 동
 dx = [-1, 0, 1, 0]
 dy = [0, -1, 0, 1]
@@ -60,3 +73,4 @@ print(z)
 # 입력대비 너무 오랜 시간이 걸린다.
 # 아무튼 재갱신을 시키지 않는다면 결론적으로 n, m 에 도달하게 ㅗ디면 콜스택에서 이전 콜스택에서 도달하지 않았던 경로를 찾게 ㅗ디고 결구겡ㄴ 전부 콜스택에서 지워지게 된다느 ㄴ것이다.
 # 때문에 예제2번은 절대로 9가 나올 수 없다. " 재갱신을 시키지 않는 이상은."
+>>>>>>> 94dbbe1a8364640ea245c7170a3c16422dc021f1
