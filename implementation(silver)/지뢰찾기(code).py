@@ -39,9 +39,6 @@ for i in range(len(game_check)):
 			# 지뢰의 개수를 반환받고
 			a = simul(i, j, game)
 			board_check_list[i][j] = str(a)
-		# 이건 지뢰가 있는 칸이 열려있는 상태
-		# 그럼 지뢰를 밟은 것이므로
-		# 게임을 종료
 		elif game[i][j] == "*" and game_check[i][j] == "x":
 			isActive = False
 
