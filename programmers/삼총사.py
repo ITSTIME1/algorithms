@@ -1,14 +1,17 @@
 import sys
 import heapq
-import math
 from collections import deque
 from itertools import permutations, combinations, product, combinations_with_replacement
 input = sys.stdin.readline
 
 
-n, m = 2, 5
+
+number = [-1, 1, -1, 1]
 
 
-a = math.gcd(n, m)
-b = math.lcm(n, m)
+cnt = 0
+for i in combinations(number, 3):
+	if sum(i) == 0:
+		cnt += 1
 
+print(cnt)
