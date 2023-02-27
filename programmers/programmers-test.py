@@ -4,7 +4,6 @@ from collections import deque
 from itertools import permutations, combinations, product, combinations_with_replacement
 input = sys.stdin.readline
 
-
 def solution(a, b):
     answer = 0
     
@@ -17,6 +16,7 @@ def solution(a, b):
             answer += i
     
     return answer
+
 
 
 a = solution(5, 3)
