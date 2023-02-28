@@ -24,6 +24,9 @@ input = sys.stdin.readline
 # a = 3-1 = 2
 # n = 4-2 = 2 
 # a = 5-3 = 2
+
+# 맞네 문제 이해가 맞는데 아마 아까 0 때문에 틀렸을거 같다
+
 s = "foobar"
 dic = {}
 
