@@ -170,8 +170,7 @@ def solution(numbers, hand):
            
            	le = math.sqrt(math.pow(currentPos[0] - l_pos[0], 2) + math.pow(currentPos[1] - l_pos[1], 2))
            	re = math.sqrt(math.pow(currentPos[1] - r_pos[1], 2) + math.pow(currentPos[1] - r_pos[1], 2))
-
-           	print(le, re) 
+ 
 
             # le = abs(currentPos[0] - l_pos[0]) + abs(currentPos[1] - l_pos[1])
             # re = abs(currentPos[0] - r_pos[0]) + abs(currentPos[1] - r_pos[1])
