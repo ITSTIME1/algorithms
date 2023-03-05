@@ -50,7 +50,7 @@ for i in range(len(s_list)):
 		else:
 			idd-=1
 			j+=1
-			stack.append(alpha[a])
+			stack.append(alpha[a]) 
 
 	answer += stack[-1]
 	idd = index

@@ -17,7 +17,7 @@ def solution(ingredient):
         ham.append(i)
 
         # // slice 이용하면 저렇게 리스트 형식처럼 뜨는구나
-        # // ㅇㅋ
+        # // ㅇ
         if ham[-4:] == [1,2,3,1]:
 
             answer += 1
