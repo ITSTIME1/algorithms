@@ -5,6 +5,8 @@ def solution(today, terms, privacies):
     # 오늘날짜를 구분한거
     t_y, t_m, t_d = today.split('.')
     # 오늘날짜를 계산하네
+    # 여기서 사용된건 년 월 을 일단위로 변형시켜 총 일수로 따지고 있네
+    
     today = int(t_y)*12*28 + int(t_m)*28 + int(t_d)
     print(today)
     today2 = int(t_y)*365 + int(t_m)*28 + int(t_d)
