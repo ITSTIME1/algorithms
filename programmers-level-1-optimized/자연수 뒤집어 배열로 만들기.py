@@ -19,9 +19,17 @@ def digit_reverse(n):
 
 # 단 set과 같이 순서 개념이 없어 인덱스로 접근할 수 없는 자료구조는 reversed()함수를 사용할 수 없다.
 
+
 n = [1,2,3,4]
 n = (1,2,3,4)
 n = "1234"
 
 a = digit_reverse(n)
 print(a)
+
+
+an = "안녕하세요"
+
+answer = ""
+for i in reversed(an):
+	answer += i
