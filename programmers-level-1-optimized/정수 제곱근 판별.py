@@ -64,6 +64,8 @@ import math
 # math라이브러리의 제곱근 함수인 sqrt()
 # 매개변수로 n을 넣게 되면 n의 제곱근을 구 할 수 있고
 # is_integer() 함수를 통해서 그 값이 양의 정수값인지 아닌지 알 수 있다.
+# isdigit() => 숫자를 판별하는 함수
+# is_integer() => 정수값인지 확인.
 n = 25
 sqrt3 = math.sqrt(n).is_integer()
 # 그럼 n은 5가 되니 양의 정수의 제곱이 된다라는 조건의 성립하므로
