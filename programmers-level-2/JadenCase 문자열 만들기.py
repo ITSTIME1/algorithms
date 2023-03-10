@@ -16,7 +16,6 @@ def solution(s):
 	print(s_list)
 
 	ans = ""
-	# 공백 처리가 중요해.
 	for i in range(len(s_list)):
 		if s_list[i] == "":
 			ans += " "
@@ -25,7 +24,11 @@ def solution(s):
 			ans += s_list[i].lower() + " "
 		
 		else:
-			ans += s_list[i].title() + " "
+            # ans += s_list[i].title() + " "
+			ans += s_list[i].capitalize() + " "
 	return ans[:len(ans)-1]
 
-solution(s)
+
+# title() 과 capitalize() 의 차이라고 한다면
+# 둘다 첫 글자를 대문자로 변경해준다는건 동일하지만
+# title() 같은 경우 알파벳 외의 문자로 나누어져 있는 영단어들의 첫 글자를 모두 대문자로 바꾸어준다.
