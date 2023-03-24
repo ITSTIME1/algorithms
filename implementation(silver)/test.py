@@ -1,4 +1,11 @@
+import sys
+import heapq
+import math
+from collections import deque
+from itertools import permutations, combinations, product, combinations_with_replacement
+input = sys.stdin.readline
 
-# format 을 사용하면되네
-a = 52355
-print(format(a, '07'))
+x = [1,2,3,4]
+
+s = sum([i for i in x])
+print(s)
