@@ -1,7 +1,10 @@
 # Solution 1
 
-fixed_string = str(input())
-print(fixed_string + '??!')
+import string
+
+
+ar = [string.ascii_lowercase]
+print(ar)
 
 
 
