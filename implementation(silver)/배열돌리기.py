@@ -13,7 +13,6 @@ arr = [list(map(int, input().strip().split())) for _ in range(n)]
 
 # 총 r번을 반복할거고
 for i in range(r):
-
 	# 한번 반복시키고
 	# 그 다음 내부반복문도 똑같이 반복시키고
 	# 오늘 배운것 중 하나는 행렬의 둘 중의 작은 값의 // 2한다면
