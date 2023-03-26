@@ -53,10 +53,13 @@ def matrix(n, m, r, depth):
 		x=y=i
 		index = 0
 
-		for _ in range(r % (size-8*i)):
-			a = l.popleft()
-			l.append(a)
-
+		# 이 rotate() 함수를 사용하면 더 잘 돌릴 수 있네
+		# 안에 인수를 넘겨주면 -붙이면 반시계
+		# rotate() 함수를 잘 사용하면 좋겠네
+		l.rotate(-(r % (size-8*i)))	
+		# for _ in range():
+		# 	a = l.popleft()
+		# 	l.append(a)
 		arr[x][y] = l[0]
 		l.popleft()
 
@@ -74,11 +77,11 @@ def matrix(n, m, r, depth):
 
 
 matrix(n, m, r, depth)
-
-for row in arr:
-	for items in row:
-		print(items, end = " ")
-	print()
+print("\n".join([" ".join([str(item) for item in row]) for row in arr]))
+# for row in arr:
+# 	for items in row:
+# 		print(items, end = " ")
+# 	print()
 
 # [[3, 4, 8, 12], 
 # [2, 11, 10, 16], 
