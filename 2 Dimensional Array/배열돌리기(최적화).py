@@ -18,7 +18,7 @@ arr = [list(map(int, input().split())) for _ in range(n)]
 # 겉배열만 신경쓰고 겉배열이 돌아가면 같은줄 알았는데 그게 아니었구나
 # 다시한번 볼 필요가 있다 이건
 
-size = 2 * n + 2 * m - 4
+size = ((n*2) + (m*2) - 4)
 depth = min(n, m) // 2
 
 def matrix(n, m, r, depth):
@@ -29,7 +29,6 @@ def matrix(n, m, r, depth):
 		x=y=i
 		l = deque([arr[x][y]])
 		while True:
-
 			# 0, 1
 			nx = x+dx[index][0]
 			ny = y+dx[index][1]
