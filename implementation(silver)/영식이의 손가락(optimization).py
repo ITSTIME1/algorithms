@@ -25,20 +25,27 @@ max_val  = int(input())
 
 # 1과 5가 나올 수 있고
 stand = 8
+get = stand - n 
+get_1 = get+1
 
 if n == 1 and max_val == 0:
 	print(0)
 	exit()
 
 if n == 1 or n == 5:
-	print(stand*max_val + (stand-((stand-n)+1)))
+	# print(stand*max_val + (stand-((stand-n)+1)))
+	print(stand*max_val + (stand-get_1))
 else:
 	# 8 * (6//2) + 8-((8-n)+1)
 	if max_val % 2 != 0:
-		print(stand*((max_val//2) + (max_val % 2)) - (stand-((stand-n)+1)))
+		print(stand*((max_val//2) + (max_val % 2)) - (stand-get_1))
 	else:
-		print(stand*(max_val//2) + (stand-((stand-n)+1)))
+		print(stand*(max_val//2) + (stand-get_1))
 
 
+
+# 계산을 미리 해둔다음 그 식을 가지고 계산하면 좀 더 빠른 성능을 기대할 수 있다.
 # 식을 더 간소화 해보자
+# print(stand*max_val + (stand-get_1))
+
 
