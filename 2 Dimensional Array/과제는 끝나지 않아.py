@@ -16,7 +16,7 @@ hash_table = {}
 # 과제 번호부여
 index = 1
 
-for i in range(n):
+for _ in range(n):
 	sub = list(map(int, input().split()))
 	# 과제가 1인지 0인지
 	# sub[0]
@@ -52,7 +52,7 @@ for i in range(n):
 				del hash_table[str(a)]
 				pre.pop()
 			else:
-				hash_table[str(a)][1] = hash_table[str(a)][1]-1
+				hash_table[str(a)][1]-=1
 
 print(score)
 
