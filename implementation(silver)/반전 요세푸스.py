@@ -22,17 +22,14 @@ input = sys.stdin.readline
 # 그러면 
 # 반시계방향일때는 -(k-1)
 # 시계방향일때는 k
-
-
 n, k, m = map(int, input().split())
 
 reverse = -(k-1)
 
-arr = deque(i for i in range(1, n+1))
+arr = deque(_ for _ in range(1, n+1))
 
-answer = []
-check_state = -1
-stand = m
+answer, stand, check_state = [], m, -1
+
 while len(arr) > 1:
 	# 인원수가 0이냐 0이 아니냐에 따라
 	# 상태가변경이되고 안되고
@@ -45,16 +42,16 @@ while len(arr) > 1:
 	else:
 		if check_state == 1:
 			arr.rotate(k)
-			a = arr.popleft()
-			answer.append(a)
-
 		else:
 			arr.rotate(reverse)
-			a = arr.popleft()
-			answer.append(a)
+
+		a = arr.popleft()
+		answer.append(a)
 		stand -=1 
 
 answer.append(arr[0])
+# 출력방식이 더 오래걸림
+# 12ms 차이남.
+# print("\n".join([str(i) for i in answer]))
 for i in answer:
 	print(i, end = "\n")
-
