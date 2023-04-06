@@ -26,14 +26,11 @@ index = 0
 # 방향일 경우야
 x = [firstX]
 y = [firstY]
-while True:
+while index <= n:
 	# 문자열의 값을 하나씩 가지고오고
 	# 지도의 값을 인덱스를 올리면서 하나씩 가지고오고
 	s = zido[index]
 	index += 1
-	
-	if index > n:
-		break
 
 	# 방향을 업데이트해주고
 	if s == "R":
@@ -57,18 +54,17 @@ minX = min(x)
 maxY = max(y)
 minY = min(y)
 
+# 최대 열까지니까
 
-total = []
+total = ""
 for i in range(minX, maxX+1):
-	answer = []
+	answer = ""
 	for j in range(minY, maxY+1):
-		answer.append(board[i][j])
-	total.append(answer)
+		answer += board[i][j]
+	total += answer + "\n"
 
 
-for i in total:
-	print(*i, sep = "", end="\n")
-
+print(total)
 
 
 
