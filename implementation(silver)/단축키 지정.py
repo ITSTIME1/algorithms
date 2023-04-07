@@ -21,7 +21,7 @@ for i in range(n):
 			word[j] = new_word
 			break
 
-		else:
+		else:	
 			count += 1
 
 	if count == len(word):
