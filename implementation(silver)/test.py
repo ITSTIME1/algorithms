@@ -5,17 +5,13 @@ from collections import deque
 from itertools import permutations, combinations, product, combinations_with_replacement
 input = sys.stdin.readline
 
-n = [1, 2, 3, 4]
 
-print(n[1:])
-print(n[:1])
-print(n[1:] + n[:1])
-# 슬라이싱 자체가 리스트로써 하나의 객체를 만들고
-# 슬라이싱 끼리의 연산을 통해서 리스트가 하나로 합쳐지는걸 볼 수 있다.
+# print(0.015625+0.0078125+0.00390625+0.00097656)
 
 
-# 따라서 "".join(map(str, n[1:] + n[:1]))
+print(2**26 + 2**24 + 2**21)
 
-# 리스트를 하나로 합친다음 그걸 str타입으로 바꾼 뒤 join해서 하나의 숫자로 만들 수 있다는것.
+print(1/256)# 소수로 나타내면 저렇게 되고 만약 앞이 0이라면
+# 아무것도 더해줄 값이 없으면서 뒤에 소수부만 남게 되니까
+# 2**-8이라고 한다면 2^-8승을 나타내주면 된다는 거지
 
-# 음 ㅇㅋ
