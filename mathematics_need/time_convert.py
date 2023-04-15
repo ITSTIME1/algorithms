@@ -10,6 +10,7 @@ input = sys.stdin.readline
 # 되게 간단한건데도 어려워
 def time(s):
 	h = s // 3600
+	# h = (s // 60) // 60 == s // 3600
 	m = (s // 60) % 60
 	cho = s % 60
 	return [h,m,cho]
@@ -17,7 +18,7 @@ def time(s):
 a = time(30000)
 print(a)
 
-
+print(ord('c'))	
 
 
 # def hms(s):
