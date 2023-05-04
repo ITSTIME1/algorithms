@@ -1,2 +1,5 @@
-print(-2**(64-1))
-print(2**(64-1)-1)
+from collections import deque
+
+a = deque([1, 2, 3, 4])
+while len(a) != 0:
+	print(a.popleft())
