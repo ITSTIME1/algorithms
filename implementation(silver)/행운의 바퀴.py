@@ -49,9 +49,7 @@ for i in range(n):
 		if board[i] == board[j]:
 			check = False
 
-
 if check:
-
 	for i in range(-idx, n+(-idx)):
 		print(board[i], end="")		
 else:
