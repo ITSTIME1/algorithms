@@ -36,10 +36,6 @@ def bfs(matrix, i):
 
 
 
-
-
-
-
 for i in range(T):
     n = int(input())
 
