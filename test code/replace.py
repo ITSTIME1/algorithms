@@ -20,11 +20,17 @@
 # 	if r1 is None:
 
 
-# 만약 두번째 주자가 
-a = [[6, 5, 18], [2, 6, 18]]
-# a.sort(key = lambda x : x[1])
+# # 만약 두번째 주자가 
+# a = [[False, False, False], [2, 6, 18]]
+# # a.sort(key = lambda x : x[1])
 
-a.sort(key = lambda x : (x[2], x[1]))
-print(a)
+# a.sort(key = lambda x : (x[2], x[1]))
+# print(a)
 
 
+# s = a[0].count(False)
+# print(s)
+
+s = set([2, 3], [4, 5])
+
+print(s)
