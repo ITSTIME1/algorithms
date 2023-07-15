@@ -31,6 +31,9 @@
 # s = a[0].count(False)
 # print(s)
 
-s = set([2, 3], [4, 5])
 
-print(s)
+
+s = [1,2,3,4,5]
+
+for idx, v in enumerate(s, start=1):
+    print(idx, v)
