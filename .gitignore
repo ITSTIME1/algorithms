@@ -1464,3 +1464,38 @@ myvenv/lib/python3.11/site-packages/setuptools-65.5.0.dist-info/RECORD
 myvenv/lib/python3.11/site-packages/setuptools-65.5.0.dist-info/REQUESTED
 myvenv/lib/python3.11/site-packages/setuptools-65.5.0.dist-info/top_level.txt
 myvenv/lib/python3.11/site-packages/setuptools-65.5.0.dist-info/WHEEL
+### C++ ###
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# End of https://www.toptal.com/developers/gitignore/api/c++
