@@ -1465,6 +1465,15 @@ myvenv/lib/python3.11/site-packages/setuptools-65.5.0.dist-info/REQUESTED
 myvenv/lib/python3.11/site-packages/setuptools-65.5.0.dist-info/top_level.txt
 myvenv/lib/python3.11/site-packages/setuptools-65.5.0.dist-info/WHEEL
 ### C++ ###
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
 # Prerequisites
 *.d
 
