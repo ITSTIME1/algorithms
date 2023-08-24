@@ -1,11 +1,35 @@
-n = int(input())
-card = list(map(int,input().split()))
-student = []
-for i in range(n) :
-    if card[i] == 0 :
-        student.insert(0,i+1)
-    else :
-        student.insert(card[i],i+1)
-    print(student)
-for i in reversed(student):
-    print(i,end=' ')
+# 이전 뚜겅에 영향을 받네
+# 처음 뚜겅이 없다면 무조건 10cm 쌓이고
+import sys
+# from collections import deque
+input = sys.stdin.readline
+
+s = deque(input().strip())
+s = input().strip()
+
+a = []
+total = 0
+while s:
+	index = s.popleft()
+	if not a :
+		a.append(index)
+		total += 10
+		continue
+	if a[-1] == index:
+		total += 5
+	else:
+		total += 10
+	a.append(index)
+
+print(total)
+
+
+
+total = 10
+for i in range(1, len(s)):
+	if s[i] != s[i-1]:
+		total += 10
+		continue
+	total += 5
+
+print(total)
