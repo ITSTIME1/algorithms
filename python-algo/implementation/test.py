@@ -1,4 +1,4 @@
-a = [1,2,3,4]
+string = "woeaijvwaoiejv"
 
-a[:2] -= 1
-print(a)
+for i in range(len(string)):
+	print(string[i])

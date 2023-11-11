@@ -42,15 +42,20 @@ for i in range(n):
 t = []
 while m > 0:
 	for i in combinations(ch, m):
+		print(i)
 		# M개를 선택할 수도 있고 m개보다 적게 선택할 수도 있고
 		# 선택한 치킨집들과의 모든 집들의 거리들중 그럼 선택되어진 치킨집들과 집과의 거리중 가장짧은걸 택하면되는거지
 		# 선택된 치킨좌표와 집들과의거리
+
+		# 즉 각 치킨집들 과 집과의 거리를 구하기 때문에
+		# ㄱ치킨집들을 선별해서
 		a = []
 		for j in home:
 			stand = 100
 			for c in i:
 				dist = min(stand, abs(j[0]-c[0]) + abs(j[1]-c[1]))
 				stand = dist
+			# 그렇게 구해진 가장 작은 dist거리를 넣어주게 되면 최대 고를 수 있는 M개를 모두 선택한 것이 되기 때문에
 			a.append(stand)
 		if a:
 			t.append(sum(a))

@@ -20,6 +20,10 @@ s = input().strip()
 
 
 # 아스키 코드 값으로 구할 수 있네
+# 아스키 코드 값으로 변환할때 ord를 사용하며
+# ord르 사용하게 되면 해당 문자를 아스키 코드 값으로 변경하고
+# 그렇게 변경한 값을 소문자에 대응 시키기 위해서
+# 97로 나눈다. 그러면 인덱스가 나올 테니까
 arr = [0] * 26
 
 for i in range(len(s)):
@@ -30,7 +34,6 @@ for i in range(len(s)):
 	# 그걸 a~z에 대응 시키는 리스트로 적용해서 더해 가지고 값을 구하는 방식임
 	index = int(ord(s[i]) % 97)
 	arr[index] += 1
-
 
 for i in arr:
 	print(i, end = " ")

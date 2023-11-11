@@ -1,24 +1,30 @@
-
 import sys
+from collections import deque
 input = sys.stdin.readline
 
 
-n = int(input())
+N = int(input())
 
-a = [input().strip() for _ in range(n)]
+word = [input().rstrip() for _ in range(N)]
 
-# 단어들을 받아올때
-# 해당 단어들을 0 부터 끝까지 읽어보면 될거 같으넫
-# 그래씅ㄹ대 해당단어랑 맞으면 되는거고
-first = a[0]
-len = len(first)
-li = []
 
-for i in range(len):
- 	remain = (i + len) % len
- 	word = first[i:len] + first[:remain]
+for i in range(N):
+	stand = word[i]
 
- 	print(word)
- 	li.append(word)
+	for j in range(N):
+		compare_word = deque(word[j])
+		
+		len_word = len(compare_word)
+		flag = True
+		while len_word > 0:
+			compare_word.rotate(1)
+			if "".join(compare_word) == stand:
+				flag = False
+				break
+			len_word -= 1
+		if not flag:
+			word[j] = stand
 
-print(li)
+print(len(set(word)))
+
+
