@@ -2,28 +2,29 @@ import sys
 import requests
 import time
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QVBoxLayout, QLabel, QDesktopWidget, QAction, qApp
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QThread, pyqtSignal
+
+
+# 인터넷 체크
+class InternetChecker(QThread):
+    internet_status_signal = pyqtSignal(bool)
+    def run(self):
+        while True:
+            try:
+                response = requests.get("https://www.google.com", timeout=5)
+                internet_status = response.status_code == 200
+            except requests.ConnectionError:
+                internet_status = False
+            self.internet_status_signal.emit(internet_status)
+            time.sleep(30)  # Sleep for 60 seconds (1 minute)
 
 class ToicWordApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.is_internet_connect = False
+        self.connect_count = 0
         self.initUI()
         
-    def tryInternetConnection(self):
-        try:
-            # Google의 서버에 요청을 보내 응답을 받음
-            response = requests.get("https://www.google.com", timeout=5)
-            if response.status_code == 200:
-                self.is_internet_connect = True
-                print("인터넷 연결 성공")
-                ex.show()
-                return True
-        except requests.ConnectionError:
-            self.is_internet_connect = False
-            print("인터넷 연결 실패")
-        return False
-    
     def createMenuBar(self):
         # 종료
         exitAction = QAction('종료', self)
@@ -31,8 +32,8 @@ class ToicWordApp(QMainWindow):
         exitAction.setStatusTip('프로그램 종료')
         exitAction.triggered.connect(qApp.quit)
 
-        menubar = self.menuBar()  # Use self.menuBar() instead of menubar = self.menuBar()
-        # 메뉴바라는 객체를 만들고, 아 아까는 이름이 중복되서 메소드랑.
+        menubar = self.menuBar()  
+        
         menubar.setNativeMenuBar(False)  # window와 동일한 환경을 갖추기 위해서
         settingMenu = menubar.addMenu('&설정')
         settingMenu.addAction(exitAction)
@@ -48,31 +49,23 @@ class ToicWordApp(QMainWindow):
     def createLayout(self):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
-        # 레이블 생성후 상단, 가운데
-        self.result_label = QLabel("Test Label")
+        self.createWordLayout(central_widget)
+    
+    
+    def createWordLayout(self, central_widget):
+        self.result_label = QLabel("Failed Internet Connection." if not self.is_internet_connect else "Successful Internet Connection.")
         self.result_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
         
         layout = QVBoxLayout()
         layout.addWidget(self.result_label)
         central_widget.setLayout(layout)
-    
-    # def display_text(self):
-    #     entered_text = self.text_edit.text()
-    #     self.result_label.setText(f"Input Text : {entered_text}")
-        
+
     def createStatusBar(self):
         self.statusBar().showMessage('Connecting...')  # 상태
-        
-    
-    def checkInternetConnection(self):
-        # 인터넷 연결 확인
-        print("인터넷 연결을 확인합니다.")
-        if self.tryInternetConnection():
-            self.statusBar().showMessage("Successful Internet Connection.")
-        else:
-            self.statusBar().showMessage("Failed Internet Connection.")
             
     def initUI(self):
+        # 1. 인터넷 연결 확인
+        # self.checkInternetConnection()
         self.createLayout()
         self.setWindowTitle("ToicWordApplication")
         self.createMenuBar()  # 메뉴바
@@ -80,13 +73,28 @@ class ToicWordApp(QMainWindow):
         self.setGeometry(300, 300, 800, 600)  # 창의 크기, x, y, width, height
         self.adjustCenterScreen()
         self.show()
+        
+        # Start the internet checker thread
+        self.internet_checker = InternetChecker(self)
+        self.internet_checker.internet_status_signal.connect(self.handleInternetStatus)
+        self.internet_checker.start()
 
+    def handleInternetStatus(self, status):
+        self.is_internet_connect = status
+        if status:
+            self.result_label.setText("Successful Internet Connection.")    
+            self.connect_count = 0
+            self.statusBar().showMessage("Successful Internet Connection.")
+        else:
+            self.result_label.setText("Failed Internet Connection.")
+            print(f"1분뒤 자동으로 인터넷 연결을 시도 하겠습니다. ( 시도횟수 {self.connect_count} )")
+            self.connect_count += 1
+            self.statusBar().showMessage("Failed Internet Connection.")
+        
+# 메인이 진입점이니까
 if __name__ == '__main__':
+    
     app = QApplication(sys.argv)
     
     ex = ToicWordApp()
-    # QTimer를 사용하여 1분에 한 번씩 checkInternetConnection 함수 호출
-    timer = QTimer(ex)
-    timer.timeout.connect(ex.checkInternetConnection)
-    timer.start(10000)  # 60000 밀리초 (1분)마다 timeout 시그널 발생
     sys.exit(app.exec_())

@@ -31,11 +31,11 @@ def 단어장(wordTextName=None):
 
 
 def 랜덤단어뽑기_단어뜻맞추기(word_dic=None):
-    chosen_number = int(input("선택 : 1 or 2 \n1 = 단어뜻까지 쓰기, 2 = enter시 넘어가기"))
-    chosen_nation = int(input("영국식 발음 원하나? : 1 or 2\n1 = yes,\n2 = no"))
+    chosen_number = int(input("선택 : 1 or 2 \n1 = 단어뜻까지 쓰기, 2 = enter시 넘어가기\n"))
+    chosen_nation = int(input("영국식 발음 원하나? : 1 or 2\n1 = yes,\n2 = no\n"))
     
     word_list = list(word_dic.keys())
-    visited = [0] * len(word_list)
+    visited = [0] * len(word_list) 
     
     if chosen_nation == 1:
         print(f"영국식 발음으로 변경하겠습니다.")
@@ -98,7 +98,7 @@ def 랜덤단어뽑기_단어뜻맞추기(word_dic=None):
                             failCount+= 1
 
 
-랜덤단어뽑기_단어뜻맞추기(단어장('LC파트2문장.txt'))
+랜덤단어뽑기_단어뜻맞추기(단어장('LC파트2(부가의문문).txt'))
 # 랜덤단어뽑기_단어뜻맞추기(LCPart2())
 # # 랜덤단어뽑기(가산명사())
 # # 랜덤단어뽑기(불가산명사())
