@@ -1,0 +1,121 @@
+receptionist, 접수원
+plumber, 배관공
+accountant, 회계사
+consultant, 컨설턴트
+assistant, 비서
+department manager, 부사장
+director, 이사
+the board of directors, 이사진
+human resources, 인사부
+human department, 인사부
+accounting department, 회계부
+sales department, 영업부
+marketing department, 마케팅부
+customer service department, 고객서비스부
+shipping department, 배송부
+maintenance department, 관리부
+finance department, 재무부
+payroll department, 경리부
+quality control department, 품질관리부
+public relations department, 홍보부
+a couple of days ago, 이틀전쯤에
+the day before yesterday, 그저께
+these days, 요즘
+on a weekly basis, 매주
+quite recently, 꽤 최근에
+this afternoon, 오늘오후에
+in ten minutes, 10분후에
+not until next Monday, 다음주월요일이되어야
+by the end of the week, 금요일까지
+later today, 오늘늦게
+within a week, 한주내로
+sometime next month, 다음달쯤에
+at the latest, 늦어도
+headquarters, 본사
+main office, 본사
+press conference, 기자회견
+down the street, 길따라아래로
+on the next corner, 다음모퉁이에
+downstairs, 아래층에
+upstairs, 위층에
+right across the hall, 복도바로맞은편에
+behind the building, 건물 뒤에
+in the filing cabinet, 캐비넷안에
+in the mail box, 우편함안에
+in the front row, 앞줄에
+in the back row, 뒷줄에 
+on the bottom shelf, 맨 아래 선반에
+on the top shelf, 맨 위에 선반에
+due to severe weather, 악천후때문에
+due to road construction, 도로공사때문에
+due to circumstance, 상황때문에
+because of the power failure, 정전때문에
+because it's too narrow, 너무좁기때문에
+because there wasn't enough space, 충분한공간이 없기 때문에
+because they postponed the launch, 그들이 출시를 연기했기 때문에
+because i'll be out of town, 출장을 갈 예정이기 때문에
+because he retired, 그가 퇴직했기 때문에
+to thank us for our hard work, 우리의 노고에 감사하기 위해
+in order to get a refund, 환불을 받기 위해
+in order to finish early, 빨리끝내기위해
+for a business trip, 출장을 위해
+for a dentist appointment, 치과 예약을 받기 위해
+to welcome, 환영하기위해
+to reserve, 예약하기위해
+to discuss, 토론하기위해
+to advertise, 광고하기위해
+to increase efficiency, 효율성을 높이기 위해
+by overnight delivery, 익일 배송으로
+by accident, 우연히
+through fund-raising events, 모금 행사를 통해
+biweekly, 격주로
+for two days, 이틀간
+once in a while, 가끔
+once, 한번
+for years, 수년간
+during a break, 쉬는 시간에
+more than 10 years, 10년 이상
+at least once a month, 최소 한달에 한번
+within the next month, 다음달내로
+usually just on Saturdays, 보통토요일에만
+until noon, 정오까지
+throughout the next three weeks, 앞으로3주동안
+as soon as we arrive, 우리가도착하자마자
+no later than Friday, 늦어도 금요일까지
+every two weeks, 격주로
+Nobody knows, 아무도모르죠
+i have no idea, 몰라요
+i'm not sure, 잘몰라요
+Not that i know of, 제가 알기로는 아니에요
+she didn't mension it, 그녀가 그것에 대해서 언급하지 않았어요
+i'll find out for you, 제가 알아볼게요
+Let's ask ~, ~에게 물어보죠
+i'm still considering it, 아직 고려중이에요
+i'm still waiting, 여전히 기다리고 있어요
+i'm not certain yet, 아직 확실하지 않아요
+i feel like eating out, 외식을 하고 싶어요
+Let's stay indoors, 실내에 있어요
+i'd better go soon, 바로 가는 게 좋겠어요
+yes i'll be with you shortly, 네 곧 갈게요
+i prefer neither, 둘다선호하지않아요
+neither thanks, 고맙지만 됐어요
+Not at all, 전혀요
+i'd be delighted to, 그러고 싶어요
+Go ahead, 그렇게 하세요
+be my guest, 그렇게 하세요
+i'd appreciate it, 그렇게 해주면 고맙겠습니다.
+sales figures, 판매수치
+closet, 벽장
+put~up sale, 판매하려고 내놓다
+fall, 가을
+connecting flight, 연결편
+payment, 대금
+telephone directory, 전화번호부
+to look over, ~살펴보다
+which one do you mean, 어떤 것을 말하나요?
+keen an eye on my~, ~을 잘 살피다
+mandatory, 의무적인
+on my way to airport, 공항으로 가는길에
+be supposed to, ~하기로 되어 있다
+flat tire, 타이어 펑크가 나다
+handout, 유인물

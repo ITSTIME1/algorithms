@@ -1,0 +1,12 @@
+price, 가격
+permit, 허가증
+discount, 할인
+estimate, 제안서
+refund, 환불
+result, 결과
+opening, 공공연하게
+location, 위치
+increase, 증가
+product, 상품
+order, 주문
+plan, 계획

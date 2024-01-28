@@ -1,0 +1,70 @@
+available, 이용가능한
+possible, 가능한
+expensive, 비싼
+creative, 창의적인
+careful, 조심스러운
+specific, 구체적인
+realistic, 현실적인
+personal, 개인적인
+additional, 추가적인
+famous, 유명한
+previous, 이전의
+necessary, 필수적인
+temporary, 일시적인
+private, 사적인
+fortunate, 운이좋은
+constructive, 건설적인
+strategic, 전략적인
+wide, 광범위한
+critical, 비판적인
+leading, 선두의
+lasting, 지속적인
+challenging, 도전적인or힘든
+following, 다음의
+promising, 유망한
+encouraging, 격려하는
+detailed, 상세한
+motivated, 동기부여되는
+required, 필수적인
+established, 자리를잡은
+experienced, 노련한or숙련된
+attached, 첨부된
+reliable, 믿을만한
+dependable, 믿을만한
+reliant, 의존적인
+dependent, 의존적인
+comprehensible, 이해할 수 있는
+comprehensive, 종합적인
+respectable, 존경할 만한
+respective, 각각의
+responsible, 책임감있는
+responsive, 반응적인
+informative, 유익한
+informed, 잘 아는
+respected, 존경 받는
+respectful, 공손한
+considerable, 상당한
+considerate, 사려깊은
+impressive, 인상적인
+impressed, 감명 받은
+successful, 성공적인
+successive, 연속적인
+favorable, 우호적인
+favorite, 좋아하는
+confident, 확신하는
+confidential, 기밀의
+industrial, 기업의
+industrious, 근면한
+be responsible for, 책임을 지다
+be recognized for, 인정을 받다
+be eligible for, ~의 자격이 있다
+be entitled to, ~의 자격이 있다
+be dependent on, ~에 의존하다
+be concerned about, ~을 고려하다
+be familiar with, 잘 알고 있다
+be dedicated to, 헌신하다
+be promoted to, 승진하다
+be accessible by, 접근이가능하다
+be aware of, 인식하다
+be capable of, ~할 수 있다
+be able to do, ~할 수 있다.

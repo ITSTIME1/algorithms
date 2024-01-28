@@ -1,0 +1,13 @@
+advice, 충고
+access, 접근
+consent, 동의
+research, 연구
+employment, 고용
+stationery, 문구류
+information, 정보
+luggage, 짐
+baggage, 짐
+equipment, 장비
+furniture, 가구
+machinery, 기계류
+merchandise, 상품
