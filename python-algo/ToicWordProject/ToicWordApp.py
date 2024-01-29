@@ -1,11 +1,14 @@
 import sys
 import requests
 import time
-from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QVBoxLayout, QLabel, QDesktopWidget, QAction, qApp
-from PyQt5.QtCore import Qt, QTimer, QThread, pyqtSignal
+from PyQt5.QtWidgets import ( QStackedWidget, QWidget, QApplication, QMainWindow, 
+    QVBoxLayout, QLabel, QGridLayout, QPushButton, 
+    QSizePolicy
+)
+from PyQt5.QtGui import *
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
 
 
-# 인터넷 체크
 class InternetChecker(QThread):
     internet_status_signal = pyqtSignal(bool)
     def run(self):
@@ -16,85 +19,120 @@ class InternetChecker(QThread):
             except requests.ConnectionError:
                 internet_status = False
             self.internet_status_signal.emit(internet_status)
-            time.sleep(30)  # Sleep for 60 seconds (1 minute)
+            time.sleep(60)
+        
+# 단어장 선택               
+class SecondPageLayout(QWidget):
+    def __init__(self):
+        super().__init__() # Qwidget에 있는것들을 사용하기 위해서.
 
-class ToicWordApp(QMainWindow):
+    def initUI(self):
+        pass
+        
+class FirstPageLayout(QWidget):
     def __init__(self):
         super().__init__()
         self.is_internet_connect = False
         self.connect_count = 0
-        self.initUI()
-        
-    def createMenuBar(self):
-        # 종료
-        exitAction = QAction('종료', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('프로그램 종료')
-        exitAction.triggered.connect(qApp.quit)
+        self.selected_word_book = None
+        self.stackedWidget = None  # Define stackedWidget attribute
+        self.initUI() # call initUI Method
 
-        menubar = self.menuBar()  
-        
-        menubar.setNativeMenuBar(False)  # window와 동일한 환경을 갖추기 위해서
-        settingMenu = menubar.addMenu('&설정')
-        settingMenu.addAction(exitAction)
-    
-    # 화면 중앙.
-    def adjustCenterScreen(self):
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
-        
-    # 그리드 레이아웃 생성.
-    def createLayout(self):
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
-        self.createWordLayout(central_widget)
-    
-    
-    def createWordLayout(self, central_widget):
-        self.result_label = QLabel("Failed Internet Connection." if not self.is_internet_connect else "Successful Internet Connection.")
-        self.result_label.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
-        
-        layout = QVBoxLayout()
-        layout.addWidget(self.result_label)
-        central_widget.setLayout(layout)
-
-    def createStatusBar(self):
-        self.statusBar().showMessage('Connecting...')  # 상태
-            
     def initUI(self):
-        # 1. 인터넷 연결 확인
-        # self.checkInternetConnection()
-        self.createLayout()
-        self.setWindowTitle("ToicWordApplication")
-        self.createMenuBar()  # 메뉴바
-        self.createStatusBar() # 상태바
-        self.setGeometry(300, 300, 800, 600)  # 창의 크기, x, y, width, height
-        self.adjustCenterScreen()
-        self.show()
+        self.stackedWidget = QStackedWidget()
+        self.firstPage_layout()
+        self.secondPage_layout()
+
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(self.stackedWidget)
+
+        self.setGeometry(300, 300, 800, 700)
+        self.setLayout(main_layout)
         
-        # Start the internet checker thread
+        
+    def clickButton(self):
+        btn_text = self.sender().text()
+        if btn_text == "계속듣기":
+            print(self.stackedWidget)
+            self.stackedWidget.setCurrentIndex(1)
+        elif btn_text == "미국 발음":
+            pass
+        elif btn_text == "영국 발음":
+            pass
+        elif btn_text == "호주 발음":
+            pass
+        elif btn_text == "이어서 듣기":
+            pass
+        elif btn_text == "듣기":
+            pass
+        elif btn_text == "계속듣기":
+            pass       
+   
+
+    # 단어장 선택 페이지
+    def secondPage_layout(self):
+        secondPageWidget = QWidget()
+        word_text = QLabel("this is second page.")
+        layout_page_2 = QVBoxLayout(secondPageWidget)
+        layout_page_2.addWidget(word_text)
+        self.stackedWidget.addWidget(secondPageWidget)
+        
+    def firstPage_layout(self):  
+        firstPageWidget = QWidget()
+        word_text = QLabel("Testing")
+        word_text.setStyleSheet("margin: 20px")
+        word_text.setAlignment(Qt.AlignCenter)
+        word_text.setFont(QFont("Arial",25))
+        layout_page_1 = QVBoxLayout(firstPageWidget)
+        
+        grid_layout = QGridLayout()
+        
+        self.names = ["미국식 발음", "영국식 발음", "호주 발음", "이어서 듣기", "듣기", "계속듣기"]
+        
+        coords = [(i, j) for i in range(2) for j in range(3)]
+        
+        for name, coord in zip(self.names, coords):
+            button = QPushButton(name)
+            button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            button.clicked.connect(self.clickButton)
+            grid_layout.addWidget(button, *coord)
+            
+        layout_page_1.addWidget(word_text)
+        layout_page_1.addLayout(grid_layout)
+        self.stackedWidget.addWidget(firstPageWidget)
+    
+    
+
+
+class ToicWordApp(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.statusBar = self.statusBar()
+        self.statusBar.showMessage("Connecting...")
+        self.setGeometry(200, 100, 800, 600)
+        self.setWindowTitle('Central Widget')
+        self.show()
+        self.firstLayout = FirstPageLayout()
+        self.setCentralWidget(self.firstLayout)
+        
         self.internet_checker = InternetChecker(self)
         self.internet_checker.internet_status_signal.connect(self.handleInternetStatus)
-        self.internet_checker.start()
-
+        self.internet_checker.start()  
+        
     def handleInternetStatus(self, status):
         self.is_internet_connect = status
         if status:
-            self.result_label.setText("Successful Internet Connection.")    
+            print("인터넷 연결 상태가 정상입니다.")
+            self.statusBar.showMessage("Successful Internet Connectiong.")
             self.connect_count = 0
-            self.statusBar().showMessage("Successful Internet Connection.")
         else:
-            self.result_label.setText("Failed Internet Connection.")
             print(f"1분뒤 자동으로 인터넷 연결을 시도 하겠습니다. ( 시도횟수 {self.connect_count} )")
+            self.statusBar.showMessage("Failed Internet Connectiong.")
             self.connect_count += 1
-            self.statusBar().showMessage("Failed Internet Connection.")
-        
-# 메인이 진입점이니까
+
+
 if __name__ == '__main__':
-    
     app = QApplication(sys.argv)
-    
     ex = ToicWordApp()
+    ex.show()
     sys.exit(app.exec_())
