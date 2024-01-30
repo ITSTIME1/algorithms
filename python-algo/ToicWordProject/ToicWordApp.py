@@ -1,9 +1,5 @@
-import sys
-import requests
-import random
-import time
-import os
-import playsound
+import sys, requests, random, time, os, playsound, pygame
+from functools import partial
 from gtts import gTTS
 from glob import glob
 from PyQt5.QtWidgets import (
@@ -37,18 +33,18 @@ class SecondPageLayout(QWidget):
         self.parent_stackedWidget = stackedWidget
         self.firstPageLayout = firstPageLayout
         self.prev_clicked_button = None
-        self.initUI()
+        self.init_layout()
         
 
-    def initUI(self) -> None:
-        self.createGridLayout()
+    def init_layout(self) -> None:
+        self.create_grid_layout()
         
-    def createGridLayout(self):
-        self.getWordBook()
+    def create_grid_layout(self) -> None:
+        self.get_wordbook()
         
         
     # Get wordBook at current directory.
-    def getWordBook(self):
+    def get_wordbook(self) -> None:
         root_path = f"/Users/itstime/algorithms/python-algo/ToicWordProject"
         
         txt_files = glob(os.path.join(root_path, '*.txt'))
@@ -65,7 +61,7 @@ class SecondPageLayout(QWidget):
             for i, name in enumerate(word_book_name):
                 word_book_btn = QPushButton(name)
                 word_book_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-                word_book_btn.clicked.connect(self.getWordBookName)
+                word_book_btn.clicked.connect(self.get_wordbookName)
                 grid_layout_2.addWidget(word_book_btn, i // 3, i % 3)  # Use integer division and modulo
 
             layout_page_2.addWidget(self.word_text)
@@ -75,7 +71,7 @@ class SecondPageLayout(QWidget):
             warning_message = QLabel("There is noting.")
             layout_page_2.addWidget(warning_message)
             
-    def getWordBookName(self):
+    def get_wordbookName(self) -> None:
         file_name = self.sender().text()
         
         if self.prev_clicked_button == None:
@@ -93,8 +89,8 @@ class SecondPageLayout(QWidget):
                 self.prev_clicked_button.setStyleSheet("background-color: none")
                 self.prev_clicked_button = None
 
-        self.firstPageLayout.setSelectedWordBookName(file_name)
-        # print(self.firstPageLayout.getSelectedWordBookName())
+        self.firstPageLayout.set_selected_book_name(file_name)
+        # print(self.firstPageLayout.get_selected_book_name())
         
         # 임시로 페이지이동
         self.parent_stackedWidget.setCurrentIndex(0)
@@ -107,71 +103,99 @@ class FirstPageLayout(QWidget):
     keys_list = None
     secure_random = random.SystemRandom()
     end_string = "There are no more words to choose from."  
-    prpronunciation = None # 발음
+    prpron = None # 발음
     tld = "com"
-    prev_prpronunciation = None
+    prev_prpron = None
     isPlayer = False
     timer = None
+    
+    
+    
     def __init__(self, stackedWidget) -> None:
         super().__init__()
         self.parent_stackedWidget = stackedWidget
          # Create the timer in the __init__ method
-        self.initUI()  # call initUI Method
+        self.init_layout()  # call init_layout Method
         
 
-    # @TODO 단어장 기능구현
-    def clickButton(self):
+    def click_book_btn(self) -> None:
         self.global_obj = self.sender()
         btn_text = self.sender().text()
         if self.selected_word_book is not None:
-            if btn_text == "계속듣기":
-                pass
-            
-            
-            elif btn_text in ("미국식 발음",  "호주식 발음", "영국식 발음"):
-                self.select_prpronunciation(btn_text)   
+            if btn_text in ("미국식 발음",  "호주식 발음", "영국식 발음"):
+                self.select_prpron(btn_text)   
                 
-            elif btn_text in ("이어서 듣기", "듣기"):
-                # @TODO 이어서 듣기 까지 다함.
-                # print(self.checked_word_list)
-                if self.isPlayer is False:
-                    if btn_text == "듣기":
-                        self.listen_once()
-                    elif btn_text == "이어서 듣기":
-                        self.initializeTimer()
-                else:
-                    print(f"{self.isPlayer}이미 player가 동작중..{self.timer}")
-    # Initialize timer
-    def initializeTimer(self):
-        self.timer = QTimer(self)
-        self.sender().setStyleSheet("background-color: orange")
-        self.timer.timeout.connect(self.playSound)
-        self.timer.start(2000)
-                
-    # 음원재생
-    def playSound(self):
-        check_word = self.word_text.text()
-        if check_word != self.end_string and self.prpronunciation is not None and self.tld is not None:
-            object_gTTs = gTTS(text=check_word, lang="en", tld=self.tld)
-            fileName = 'LC_File.mp4'
-            object_gTTs.save(fileName)
-            playsound.playsound(fileName)
-
-            # 그리고 다른 단어를 선택하게끔
-            self.checked_word_list.append(check_word)
-            # 새로운 단어를 뽑아옴
-            check_word = self.check_available_word()
-            self.word_text.setText(check_word)
+            elif btn_text in ("이어서 듣기", "듣기", "한 단어 계속듣기"):
+                self.play_wordbook(btn_text)
+                        
+    def play_wordbook(self, btn_text):
+        if self.isPlayer is False:
+            if btn_text == "듣기":
+                self.listen_once()
+            elif btn_text == "이어서 듣기":
+                self.continue_listening()
+            elif btn_text == "한 단어 계속듣기":
+                self.continue_listening_for_a_word()
+              
+        else:
             
-            if check_word == self.end_string:    
+            
+            # @TODO 클릭이 느림. playsound가 블록킹이라 그걸 하는 동안 동작할 수 없으니 백그라운드로 옮겨야됨.
+            if self.isPlayer and btn_text == "한 단어 계속듣기":
                 self.timer.stop()
                 self.isPlayer = False
-                self.checked_word_list.clear() # 이것때문이네
-                self.word_text.setText(self.check_available_word())
-                self.global_obj.setStyleSheet("background-color : none")
-        
+                self.sender().setStyleSheet("color: white")
+            else:
+                print(f"{self.isPlayer} 이미 player가 동작중..")
+                    
+    def continue_listening_for_a_word(self):
+        # 한단어 리스닝은, 현재 단어를 기반으로 계속 듣는것,
+        # 다음 단어를 넘기지 않음, 다음 단어 넘기는 것도 생각은 해봐야 겠다.
+        self.isPlayer = True
+        self.continue_listening(True)
+    # Initialize timer
+    def continue_listening(self, word=False) -> None:
+        self.isPlayer = True
+        self.timer = QTimer(self)
+        self.sender().setStyleSheet("color: orange")
+        self.timer.timeout.connect(partial(self.play_sound, word))
+        self.timer.start(1000)
                 
-                                
+    # 음원재생
+    # pygame 을 사용해서 실행하는거. non-blocking 방식임.
+    def play_sound(self, word) -> None:
+        check_word = self.word_text.text()
+
+        if word:
+            if check_word != self.end_string and self.prpron is not None and self.tld is not None:
+                object_gTTs = gTTS(text=check_word, lang="en", tld=self.tld)
+                fileName = 'LC_File.mp4'
+                object_gTTs.save(fileName)
+                pygame.mixer.music.load(fileName)
+                pygame.mixer.music.play()
+                self.word_text.setText(check_word)
+        else:
+            if check_word != self.end_string and self.prpron is not None and self.tld is not None:
+                object_gTTs = gTTS(text=check_word, lang="en", tld=self.tld)
+                fileName = 'LC_File.mp4'
+                object_gTTs.save(fileName)
+                pygame.mixer.music.load(fileName)
+                pygame.mixer.music.play()
+
+                self.checked_word_list.append(check_word)
+                check_word = self.check_available_word()
+                self.word_text.setText(check_word)
+
+            check_word = self.word_text.text()
+            if check_word == self.end_string:
+                print("그만")
+                self.timer.stop()
+                self.isPlayer = False
+                self.checked_word_list.clear()
+                self.word_text.setText(self.check_available_word())
+                self.global_obj.setStyleSheet("color : white")
+
+    # 선택 가능한 단어를 확인.                   
     def check_available_word(self) -> str:
         available_words = set(self.keys_list) - set(self.checked_word_list)
         if available_words:
@@ -183,15 +207,16 @@ class FirstPageLayout(QWidget):
             return self.end_string
             
     
-    def select_prpronunciation(self, btn_text):
-        # 이전에 선택한 버튼이 없을 때
-        if self.prev_prpronunciation is None:
+    def select_prpron(self, btn_text) -> None:
+        
+        # There isn't pre_pron
+        if self.prev_prpron is None:
             self.sender().setStyleSheet('color: orange')
-            self.prev_prpronunciation = self.sender()
-            self.set_pronunciation_and_tld(btn_text)   
+            self.prev_prpron = self.sender()
+            self.set_pronun_and_tld(btn_text)   
         else:
             # 이전에 선택한 버튼이 있을 때
-            if self.prev_prpronunciation == self.sender():
+            if self.prev_prpron == self.sender():
                 # 같은 버튼을 다시 클릭했을 때 토글
                 current_style = self.sender().styleSheet()
                 if 'color: orange' in current_style:
@@ -200,26 +225,26 @@ class FirstPageLayout(QWidget):
                     self.sender().setStyleSheet('color: orange')
                 
                 # 같은 버튼을 다시 클릭했으므로, 발음과 tld 초기화
-                self.prpronunciation = None
+                self.prpron = None
                 self.tld = None
             else:
                 # 다른 버튼을 클릭했을 때
                 self.sender().setStyleSheet('color: orange')
-                self.prev_prpronunciation.setStyleSheet('color: white')
-                self.prev_prpronunciation = self.sender()
+                self.prev_prpron.setStyleSheet('color: white')
+                self.prev_prpron = self.sender()
                 # 발음 설정
-                self.set_pronunciation_and_tld(btn_text)    
+                self.set_pronun_and_tld(btn_text)    
                 
     # 발음 설정                                
-    def set_pronunciation_and_tld(self, btn_text):
+    def set_pronun_and_tld(self, btn_text):
         if btn_text == "미국식 발음":
-            self.prpronunciation = "en"
+            self.prpron = "en"
             self.tld = "com"
         elif btn_text == "영국식 발음":
-            self.prpronunciation = "en"
+            self.prpron = "en"
             self.tld = "co.uk"
         else:
-            self.prpronunciation = "en"
+            self.prpron = "en"
             self.tld = "com.au"        
             
             
@@ -227,7 +252,7 @@ class FirstPageLayout(QWidget):
         self.isPlayer = True
         check_word = self.word_text.text()
         
-        if check_word != self.end_string and self.prpronunciation is not None and self.tld is not None:
+        if check_word != self.end_string and self.prpron is not None and self.tld is not None:
             object_gTTs = gTTS(text=check_word, lang="en", tld = self.tld)
             fileName = 'LC_File.mp4'
             object_gTTs.save(fileName)
@@ -236,14 +261,14 @@ class FirstPageLayout(QWidget):
             
         
         # 여기서 둘다 None인 경우는 제외하자
-        if self.prpronunciation is not None and self.tld is not None and check_word != self.end_string and check_word not in self.checked_word_list :
+        if self.prpron is not None and self.tld is not None and check_word != self.end_string and check_word not in self.checked_word_list :
             self.checked_word_list.append(check_word)
             self.check_available_word()
         self.isPlayer= False
         
         # 이후에 만약 다시 듣기를 하고 싶다면 체크표시를 만들면됨.
                         
-    def initUI(self) -> None:
+    def init_layout(self) -> None:
         self.word_text = QLabel("This is a test page.")
         self.word_text.setStyleSheet("margin: 25px")
         self.word_text.setAlignment(Qt.AlignCenter)
@@ -252,27 +277,30 @@ class FirstPageLayout(QWidget):
 
         grid_layout = QGridLayout()
 
-        self.names = ["미국식 발음", "영국식 발음", "호주식 발음", "이어서 듣기", "듣기", "계속듣기"]
+        self.names = ["미국식 발음", "영국식 발음", "호주식 발음", "이어서 듣기", "듣기", "한 단어 계속듣기"]
 
         coords = [(i, j) for i in range(2) for j in range(3)]
 
         for name, coord in zip(self.names, coords):
             button = QPushButton(name)
             button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            if name == "미국식 발음" or name == "영국식 발음" or name =="호주 발음":
-                button.clicked.connect(self.clickButton)
+            
+            if name in ("미국식 발음", "영국식 발음", "호주식 발음"):
+                button.clicked.connect(self.click_book_btn)
             else:
-                button.released.connect(self.clickButton)
+                # button.setDisabled(True)
+                button.released.connect(self.click_book_btn)
+                
             grid_layout.addWidget(button, *coord)
 
         layout_page_1.addWidget(self.word_text)
         layout_page_1.addLayout(grid_layout)
         
         
-    def getSelectedWordBookName(self):
+    def get_selected_book_name(self):
         return self.selected_word_book
     
-    def setSelectedWordBookName(self, book_name):
+    def set_selected_book_name(self, book_name):
         # 만약 선택한 단어장, 이전에 선택했던 단어장이랑 같지 않다면
         if book_name is not None and self.selected_word_book != book_name:
             # 이전에 선택한 단어장 초기화
@@ -291,6 +319,8 @@ class FirstPageLayout(QWidget):
                 self.word_text.setText(self.secure_random.choice(self.keys_list))
             except Exception as e:
                 print(f"{e} 발생.")
+                
+                
         elif book_name is not None:
             # 만약 선택한 단어장이 이전에 선택했던 단어장이랑 같다면
             # 결국 단어들만 새로 뽑으면됨.
@@ -301,14 +331,14 @@ class FirstPageLayout(QWidget):
 class ToicWordApp(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
-        self.initUI()
+        self.init_layout()
         self.show()
-
+        pygame.mixer.init()
         self.internet_checker = InternetChecker(self)
-        self.internet_checker.internet_status_signal.connect(self.handleInternetStatus)
+        self.internet_checker.internet_status_signal.connect(self.handle_internet_status)
         self.internet_checker.start()
 
-    def initUI(self):
+    def init_layout(self):
         self.stackedWidget = QStackedWidget()
         self.is_internet_connect = False
         self.connect_count = 0
@@ -319,16 +349,21 @@ class ToicWordApp(QMainWindow):
 
         self.setCentralWidget(self.stackedWidget)
 
-        self.createMenubar()
+        self.create_menubar()
         self.statusBar.showMessage("Connecting...")
         self.setWindowTitle('Central Widget')
         self.setGeometry(300, 300, 800, 700)
 
-    def createMenubar(self) -> None:
+    def create_menubar(self) -> None:
         exitAction = QAction('종료', self)
-        addWordBookAction = QAction('단어장추가', self)
-        addWordBookAction.setStatusTip('단어장 추가')
-        addWordBookAction.triggered.connect(self.move_to_secondPage)
+        choiceWordBook = QAction('단어장 선택', self)
+        addWordBook = QAction('단어장 추가', self)
+        
+        
+        choiceWordBook.setStatusTip('단어장 선택')
+        choiceWordBook.triggered.connect(self.move_to_secondPage)
+        
+        addWordBook.setStatusTip("단어장 추가")
 
         exitAction.setShortcut('Ctrl+Q')
         exitAction.setStatusTip('프로그램 종료')
@@ -340,13 +375,15 @@ class ToicWordApp(QMainWindow):
         settingMenu = menubar.addMenu('&설정')
         settingMenu.addAction(exitAction)
 
-        programMenu = menubar.addMenu('&단어장 선택')
-        programMenu.addAction(addWordBookAction)
+        programMenu = menubar.addMenu('&단어장')
+        programMenu.addAction(choiceWordBook)
+        programMenu.addAction(addWordBook)
+        
 
     def move_to_secondPage(self) -> None:
         self.stackedWidget.setCurrentIndex(1)
 
-    def handleInternetStatus(self, status) -> None:
+    def handle_internet_status(self, status) -> None:
         self.is_internet_connect = status
         if status:
             print("인터넷 연결 상태가 정상입니다.")
