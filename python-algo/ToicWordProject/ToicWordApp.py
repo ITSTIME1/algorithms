@@ -37,8 +37,8 @@ class SecondPageLayout(QWidget):
         self.parent_stackedWidget = stackedWidget
         self.firstPageLayout = firstPageLayout
         self.prev_clicked_button = None
-        
         self.initUI()
+        
 
     def initUI(self) -> None:
         self.createGridLayout()
@@ -110,39 +110,43 @@ class FirstPageLayout(QWidget):
     prpronunciation = None # 발음
     tld = "com"
     prev_prpronunciation = None
-    
-    
+    isPlayer = False
+    timer = None
     def __init__(self, stackedWidget) -> None:
         super().__init__()
         self.parent_stackedWidget = stackedWidget
+         # Create the timer in the __init__ method
         self.initUI()  # call initUI Method
         
 
     # @TODO 단어장 기능구현
     def clickButton(self):
+        self.global_obj = self.sender()
         btn_text = self.sender().text()
         if self.selected_word_book is not None:
             if btn_text == "계속듣기":
                 pass
             
             
-            elif btn_text == "미국식 발음" or btn_text == "호주식 발음" or btn_text == "영국식 발음":
+            elif btn_text in ("미국식 발음",  "호주식 발음", "영국식 발음"):
                 self.select_prpronunciation(btn_text)   
                 
-                
-            elif btn_text == "이어서 듣기":
-                
-                # @TODO 한번 듣고 나서, 다시 듣기 위해서, start, end를 구분하고 있어야 겠네
-
-                if not hasattr(self, 'timer'):  # 타이머가 없을 경우에만 타이머를 설정
-                    self.sender().setStyleSheet("background-color: orange")
-                    self.timer = QTimer(self)
-                    self.timer.timeout.connect(self.playSound)
-                    self.timer.start(2000)  # 여기서 2초에 한 번씩 실행할 테니까
-                    self.sender().setStyleSheet("background-color: none")
-            elif btn_text == "듣기": 
-                # 그럼 기존거는 한번 들려주어야 겠네
-                self.listen_once()
+            elif btn_text in ("이어서 듣기", "듣기"):
+                # @TODO 이어서 듣기 까지 다함.
+                # print(self.checked_word_list)
+                if self.isPlayer is False:
+                    if btn_text == "듣기":
+                        self.listen_once()
+                    elif btn_text == "이어서 듣기":
+                        self.initializeTimer()
+                else:
+                    print(f"{self.isPlayer}이미 player가 동작중..{self.timer}")
+    # Initialize timer
+    def initializeTimer(self):
+        self.timer = QTimer(self)
+        self.sender().setStyleSheet("background-color: orange")
+        self.timer.timeout.connect(self.playSound)
+        self.timer.start(2000)
                 
     # 음원재생
     def playSound(self):
@@ -159,9 +163,12 @@ class FirstPageLayout(QWidget):
             check_word = self.check_available_word()
             self.word_text.setText(check_word)
             
-            if check_word == self.end_string:
+            if check_word == self.end_string:    
                 self.timer.stop()
-                del self.timer  # 타이머 객체 제거
+                self.isPlayer = False
+                self.checked_word_list.clear() # 이것때문이네
+                self.word_text.setText(self.check_available_word())
+                self.global_obj.setStyleSheet("background-color : none")
         
                 
                                 
@@ -217,6 +224,7 @@ class FirstPageLayout(QWidget):
             
             
     def listen_once(self):
+        self.isPlayer = True
         check_word = self.word_text.text()
         
         if check_word != self.end_string and self.prpronunciation is not None and self.tld is not None:
@@ -228,10 +236,12 @@ class FirstPageLayout(QWidget):
             
         
         # 여기서 둘다 None인 경우는 제외하자
-        if self.prpronunciation is not None and self.tld is not None and check_word not in self.checked_word_list :
+        if self.prpronunciation is not None and self.tld is not None and check_word != self.end_string and check_word not in self.checked_word_list :
             self.checked_word_list.append(check_word)
             self.check_available_word()
-    
+        self.isPlayer= False
+        
+        # 이후에 만약 다시 듣기를 하고 싶다면 체크표시를 만들면됨.
                         
     def initUI(self) -> None:
         self.word_text = QLabel("This is a test page.")
