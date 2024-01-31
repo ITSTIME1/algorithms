@@ -5,11 +5,10 @@ from glob import glob
 from PyQt5.QtWidgets import (
     QStackedWidget, QWidget, QApplication, QMainWindow,
     QVBoxLayout, QLabel, QGridLayout, QPushButton,
-    QSizePolicy, QAction, qApp
+    QSizePolicy, QAction, qApp, QHBoxLayout
 )
 from PyQt5.QtGui import *
-from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
-
+from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer, QMimeData
 
 class InternetChecker(QThread):
     internet_status_signal = pyqtSignal(bool)
@@ -24,8 +23,80 @@ class InternetChecker(QThread):
             self.internet_status_signal.emit(internet_status)
             time.sleep(60)
 
+class DragButton(QPushButton):
+    
+    def mouseMoveEvent(self, e):
+        # whene i clicked left button.
+        if e.buttons() == Qt.LeftButton:
+            drag = QDrag(self)
+            mime = QMimeData()
+            # get button text when i clicked button but noting?
+            drag.setMimeData(mime)
+            drag.exec_(Qt.MoveAction)
+            
+        
 
-# 단어장 선택
+class ThirdPageLayout(QWidget):
+    def __init__(self, stackedWidget, firstPageLayout):
+        # QWidget initialize.
+        super().__init__()
+        self.parent_stackedWidget = stackedWidget
+        self.firstPageLayout = firstPageLayout
+        self.setAcceptDrops(True)
+        self.init_layout()
+    
+    
+    def init_layout(self) -> None:
+        self.test_drag_layout = QHBoxLayout(self)
+        # 여기다가 레이블로 만들 수 있구나
+        self.drag_and_drop_viewer = QLabel("Drop .txt file.")
+        self.drag_and_drop_viewer.setStyleSheet("border : 4px dashed #aaa")
+        self.drag_and_drop_viewer.setFont(QFont("Arial", 25))    
+        self.drag_and_drop_viewer.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.test_drag_layout.addWidget(self.drag_and_drop_viewer)
+    
+    def dragEnterEvent(self, e):
+        e.accept()
+        
+    def dropEvent(self, e):
+        # 텍스트를 가진 파일일 때만 . Mime Type / text/plain
+        if e.mimeData().hasText():
+            file = e.mimeData().urls()[0].toLocalFile().split("/")[-1]
+            result = file.split(".")
+            file_name, file_extension = result[0], result[1]
+            
+            if file_extension == 'txt':
+                e.setDropAction(Qt.CopyAction)
+                e.accept()
+                self.drag_and_drop_viewer.setText(f"{file_name + '.' + file_extension}\nSuccessful load.")
+                self.drag_and_drop_viewer.setStyleSheet("border : 4px dashed orange")
+                current_index = self.parent_stackedWidget.currentIndex()
+                current_widget = self.parent_stackedWidget.widget(current_index-1)
+                # 현재 표시된 페이지의 위젯이 SecondPageLayout 클래스의 인스턴스인지 확인
+                if isinstance(current_widget, SecondPageLayout):
+                    # 위젯을 지우고, 해당 자리에 SecondPageLayout을 다시 생성.
+                    self.parent_stackedWidget.removeWidget(current_widget)
+                    self.parent_stackedWidget.insertWidget(current_index - 1, SecondPageLayout(self.parent_stackedWidget, self.firstPageLayout))
+                    self.parent_stackedWidget.setCurrentIndex(1)
+                    
+                
+            else:
+                e.ignore()
+                self.drag_and_drop_viewer.setText(f"{file_name + '.' + file_extension}\nFailed load.")
+                self.drag_and_drop_viewer.setStyleSheet("border : 4px dashed #aaa")
+        else:
+            e.ignore()
+            self.drag_and_drop_viewr.setText(f"Not Text File.")
+            
+        pass
+            
+
+
+        
+        
+        
+        
+
 class SecondPageLayout(QWidget):
 
     def __init__(self, stackedWidget, firstPageLayout) -> None:
@@ -34,7 +105,6 @@ class SecondPageLayout(QWidget):
         self.firstPageLayout = firstPageLayout
         self.prev_clicked_button = None
         self.init_layout()
-        
 
     def init_layout(self) -> None:
         self.create_grid_layout()
@@ -45,6 +115,7 @@ class SecondPageLayout(QWidget):
         
     # Get wordBook at current directory.
     def get_wordbook(self) -> None:
+        print("get_wordBook 호출")
         root_path = f"/Users/itstime/algorithms/python-algo/ToicWordProject"
         
         txt_files = glob(os.path.join(root_path, '*.txt'))
@@ -114,7 +185,6 @@ class FirstPageLayout(QWidget):
     def __init__(self, stackedWidget) -> None:
         super().__init__()
         self.parent_stackedWidget = stackedWidget
-         # Create the timer in the __init__ method
         self.init_layout()  # call init_layout Method
         
 
@@ -135,12 +205,8 @@ class FirstPageLayout(QWidget):
             elif btn_text == "이어서 듣기":
                 self.continue_listening()
             elif btn_text == "한 단어 계속듣기":
-                self.continue_listening_for_a_word()
-              
+                self.continue_listening_for_a_word() 
         else:
-            
-            
-            # @TODO 클릭이 느림. playsound가 블록킹이라 그걸 하는 동안 동작할 수 없으니 백그라운드로 옮겨야됨.
             if self.isPlayer and btn_text == "한 단어 계속듣기":
                 self.timer.stop()
                 self.isPlayer = False
@@ -346,6 +412,7 @@ class ToicWordApp(QMainWindow):
         self.firstLayout = FirstPageLayout(self.stackedWidget)
         self.stackedWidget.addWidget(self.firstLayout)
         self.stackedWidget.addWidget(SecondPageLayout(self.stackedWidget, self.firstLayout))
+        self.stackedWidget.addWidget(ThirdPageLayout(self.stackedWidget, self.firstLayout))
 
         self.setCentralWidget(self.stackedWidget)
 
@@ -364,6 +431,7 @@ class ToicWordApp(QMainWindow):
         choiceWordBook.triggered.connect(self.move_to_secondPage)
         
         addWordBook.setStatusTip("단어장 추가")
+        addWordBook.triggered.connect(self.move_to_thirdPage)
 
         exitAction.setShortcut('Ctrl+Q')
         exitAction.setStatusTip('프로그램 종료')
@@ -379,6 +447,9 @@ class ToicWordApp(QMainWindow):
         programMenu.addAction(choiceWordBook)
         programMenu.addAction(addWordBook)
         
+        
+    def move_to_thirdPage(self) -> None:
+        self.stackedWidget.setCurrentIndex(2)
 
     def move_to_secondPage(self) -> None:
         self.stackedWidget.setCurrentIndex(1)
