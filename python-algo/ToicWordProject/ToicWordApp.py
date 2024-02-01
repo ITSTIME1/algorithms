@@ -123,8 +123,7 @@ class SecondPageLayout(QWidget):
     # Get wordBook at current directory.
     def get_wordbook(self) -> None:
         print("get_wordBook 호출")
-        root_path = f"/Users/itstime/algorithms/python-algo/ToicWordProject"
-        
+        root_path = f"{sys.path[0]}"
         txt_files = glob(os.path.join(root_path, '*.txt'))
         word_book_name = [file.split("/")[-1] for file in txt_files]
         layout_page_2 = QVBoxLayout(self)
@@ -147,8 +146,25 @@ class SecondPageLayout(QWidget):
             
         else:
             warning_message = QLabel("There is noting.")
+            warning_message.setAlignment(Qt.AlignCenter)
+            # Qt.AlignCenter
             layout_page_2.addWidget(warning_message)
             
+            
+    # @TODO 이거를 생각해보니까, 단어장이 일단 그 파일에 있어야 한다는거니까
+    # 단어장을 추가하지를 못하는데 어떻게 해야하냐
+    # 1. 프로그램 내장디비를 sqlite같은걸 사용한다.
+    # 2. 복사해서 사용하는 동안에만 딕셔너리에 모두 저장해둔다. 너무 비효율적인거 같은데
+    
+    # 단어 저장할 파일 path를 사전에 정의하고, 그 사전에 정의된 파일 path를 내장으로 가지고 있자.
+    # 그래서 만약에 환경변수에 해당 파일 path가 저장되어 있다면, 해당 단어 저장 디렉토리를 가지고 오고
+    # 만약 해당 환경변수가 없다면, 단어 환경변수를 설정한다.
+    # 이렇게 하면, 이미 installer로 만들어진 것에, 추가하지 못하는 문제를 해결할 수 있다.
+    # 뿐만 아니라, 드래그 앤 드롭 기능을 이용할 때, 어떤 폴더에서든 .txt파일을 드래그앤 드롭하고 난 뒤에
+    # 환경변수로 해당 파일을 옮기거나, 해당 파일에다가 추가한다. copy본을 .
+    # 그럼 한번 추가 등록한 것은 삭제하지 않는 이상, 환경 변수에 의해 단어장을 계속 불러올 것이다.
+    # 그럼 환경변수를 어떻게 설정할지가 문제네 이건 나중에하자.
+    # 지금 쓰는데 큰 문제가 없으니까. 
     def get_wordbookName(self) -> None:
         file_name = self.sender().text()
         
@@ -213,13 +229,7 @@ class FirstPageLayout(QWidget):
                 self.global_obj.setStyleSheet("color : orange")
             
             
-            
-                
-    # @TODO 클릭 했을때, prev_button을 하나더 만들어야겠다.
-    # 발음 prev_button 말고, 하나더 만들어서, listening에 관련된 버튼 감지를 하나더 해야겠네
-    # 그리고 나서, 버튼이 옮겨갔을 때, 이전에 있던 버튼은 white로 변하도록 해야겠고
-    
-    # 하 이기능은 귀찮긴한데 일단 기능이 구현이 되었으니, 해당 기능은 제외하고, 단어를 추가하는것까지만 해보자.
+    # TODO listening button 감지하는거 하나 더 만들어야 할 것 같고, 
     def play_wordbook(self, btn_text):
         # play_wordBook을 실행할때 중요한건, isPlayer is False냐가 중요한거니까
         if self.isPlayer is False:
@@ -247,56 +257,76 @@ class FirstPageLayout(QWidget):
         self.isPlayer = True
         self.continue_listening(True)
     # Initialize timer
-    def continue_listening(self, word=False) -> None:
+    def continue_listening(self, has_a_word=False) -> None:
         self.isPlayer = True
         self.timer = QTimer(self)
         # self.global_obj.setStyleSheet("color: orange")
-        self.timer.timeout.connect(partial(self.play_sound, word))
+        self.timer.timeout.connect(partial(self.play_sound, has_a_word))
         self.timer.start(1500)
                 
     # 음원재생
     # pygame 을 사용해서 실행하는거. non-blocking 방식임.
-    def play_mp4(self, check_word):
+    def play_mp4(self, check_word) -> bool:
         if check_word != self.end_string or check_word != "Please choose pronunciation.":
             if self.pron != None and self.tld != None:
                 object_gTTs = gTTS(text=check_word, lang="en", tld=self.tld)
                 fileName = 'LC_File.mp4'
                 object_gTTs.save(fileName)
+                
                 pygame.mixer.music.load(fileName)
                 pygame.mixer.music.play()
-                self.word_text.setText(check_word)
-    
+                
+                
+
+                return True
+        return False
     # play_sound         
-    def play_sound(self, word) -> None:
-        check_word = self.word_text.text()
-
-        if word:
-            self.play_mp4(check_word)
-        else:
-            self.play_mp4(check_word)
-            self.checked_word_list.append(check_word)
-            check_word = self.check_available_word()
-
+    def play_sound(self, has_a_word) -> None:
+        # 단어가 존재한다면, 또는 단어가 존재하지 않는다면
+        if has_a_word:
+            # 체크할 단어를 가지고 옴
+            # 이제 그 단어를 play_mp4로 보낼거임
             check_word = self.word_text.text()
-            if check_word == self.end_string or check_word == "Please choose pronunciation.":
-                self.timer.stop()
-                self.isPlayer = False
-                self.checked_word_list.clear()
-                self.word_text.setText(self.check_available_word())
-                # self.global_obj.setStyleSheet("color : white")
+            if check_word != self.end_string:
+                self.word_text.setText(check_word)
+                self.play_mp4(check_word)
+        else:
+            check_word = self.word_text.text()
+            
+            if check_word != self.end_string:
+                # 해당 단어를 가지고 온다음에, 소리를 재생시키고
+                self.play_mp4(check_word)
+            
+                # 억지로 딜레이를 걸긴 했는데, 이게 효과가 있을지 모르겠네
+                time.sleep(1.5)
+                self.checked_word_list.append(check_word)
+                new_word = self.check_available_word()
+                
 
+                if new_word == self.end_string or new_word == "Please choose pronunciation.":
+                    self.timer.stop()
+                    self.isPlayer = False
+                    self.checked_word_list.clear()
+                else:
+                    self.word_text.setText(new_word)
+            # else:
+            #     # 생각해보니까 이것도 checked_list를 기반으로 하는거지
+            #     # 그럼 어쩔수가 없네 다른 방식을 고안해야겠음.
+            #     self.word_text.setText(self.check_available_word())
+    
+        
+        
     # 선택 가능한 단어를 확인.                   
     def check_available_word(self) -> str:
         if self.keys_list is not None and len(self.checked_word_list) != 0:
             available_words = set(self.keys_list) - set(self.checked_word_list)
             if available_words:
                 selected_word = self.secure_random.choice(list(available_words))
-                self.word_text.setText(selected_word)
                 return selected_word
             else:
-                self.word_text.setText(self.end_string)
                 return self.end_string
         else:
+            self.word_text.setText(self.end_string)
             print("단어 존재하지 않음.")
             
             
@@ -347,11 +377,7 @@ class FirstPageLayout(QWidget):
         
         if check_word != self.end_string or check_word != "Please choose pronunciation.":
             if self.pron != None and self.tld != None:
-                object_gTTs = gTTS(text=check_word, lang="en", tld = self.tld)
-                fileName = 'LC_File.mp4'
-                object_gTTs.save(fileName)
-                pygame.mixer.music.load(fileName)
-                pygame.mixer.music.play()
+                self.play_sound(check_word)
                 # self.global_obj.setStyleSheet("color: white")
             # else:
             #     # 만약 둘 중에 하나라도 선택이 되지 않았다면, 발음을 먼저 선택하라고 한다.
@@ -547,6 +573,7 @@ class ToicWordApp(QMainWindow):
 
 
 if __name__ == '__main__':
+    print(sys.path[0])
     app = QApplication(sys.argv)
     ex = ToicWordApp()
     sys.exit(app.exec_())
