@@ -24,16 +24,15 @@ public class 풍선터트리기_Offset {
 
         int check = N;
         int index = 0;
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("");
 
         while (true) {
             // 풍선을 터뜨림
 
             c_q[index] = true;
             sb.append(index + 1 + " ");
-            
             check--;
-            if(check == 0) break;
+            if (check == 0) break;
 
             int move = q[index];
             // false라면 move도 감소시키지만, true라면 index만 옮기면되므로

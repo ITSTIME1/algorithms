@@ -14,6 +14,9 @@ from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer, QMimeData, QEvent, QPo
     @Class Internet Check.
 '''
 
+
+# @TODO 한단어에 대해서, 세가지 발음을 한번에 듣는것을 만들자
+
 class InternetChecker(QThread):
     internet_status_signal = pyqtSignal(bool)
 
@@ -227,7 +230,12 @@ class FirstPageLayout(QWidget):
                 # 해당 버튼의 객체를 가지고, 작업을 하기 위해서 sender()를 넘기면 될거 같음
                 self.play_wordbook(btn_text)
                 self.global_obj.setStyleSheet("color : orange")
-            
+            elif btn_text == "다음 단어":
+                current_word = self.word_text.text()
+                if current_word != self.end_string:
+                    self.checked_word_list.append(current_word)
+                    self.word_text.setText(self.check_available_word())
+        
             
     # TODO listening button 감지하는거 하나 더 만들어야 할 것 같고, 
     def play_wordbook(self, btn_text):
@@ -411,9 +419,9 @@ class FirstPageLayout(QWidget):
 
         grid_layout = QGridLayout()
 
-        self.names = ["미국식 발음", "영국식 발음", "호주식 발음", "이어서 듣기", "듣기", "한 단어 계속듣기"]
+        self.names = ["미국식 발음", "영국식 발음", "호주식 발음", "이어서 듣기", "듣기", "한 단어 계속듣기", "다음 단어"]
 
-        coords = [(i, j) for i in range(2) for j in range(3)]
+        coords = [(i, j) for i in range(3) for j in range(3)]
 
         for name, coord in zip(self.names, coords):
             button = QPushButton(name)
@@ -467,23 +475,28 @@ class FirstPageLayout(QWidget):
     
     def set_selected_book_name(self, book_name):
         # 만약 선택한 단어장, 이전에 선택했던 단어장이랑 같지 않다면
-        if book_name is not None and self.selected_word_book != book_name:
+        print(book_name, self.selected_word_book)
+        # 음 if문 안으로 들어오는건 확실한데
+        if book_name is not None:
             # 이전에 선택한 단어장 초기화
             self.word_book_dic = {}
 
             try:
-                with open(book_name) as file:
+                with open(book_name, "r") as file:
                     words = file.readlines()
                     for word in words:
-                        result = word.split(",")
-                        # 단어: 뜻
-                        self.word_book_dic[result[0]] = result[1]
-
+                        # 콤마를 기준으로 분리한다.
+                        # 콤마를 기준으로 분리 한다음에, result가 두개 이상인것
+                        result = word.rstrip().split(",")
+                        if len(result) >= 2:
+                            # 단어: 뜻
+                            self.word_book_dic[result[0]] = result[1]
                 self.selected_word_book = book_name
                 self.keys_list = list(self.word_book_dic.keys())
+                print(self.keys_list)
                 self.word_text.setText(self.secure_random.choice(self.keys_list))
             except Exception as e:
-                print(f"{e} 발생.")
+                print(f"{e.with_traceback}  + 발생.")
                 
                 
         elif book_name is not None:

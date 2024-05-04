@@ -1,0 +1,9 @@
+discuss, ~에 대해 논의하다.
+explain, ~에 대해 설명하다.
+attend, ~에 참석하다.
+contact, ~와 연락하다.
+accompany, ~와 동반하다.
+notify, ~에게 통지하다.
+oppose, ~에 반대하다.
+await, ~을 기다리다.
+

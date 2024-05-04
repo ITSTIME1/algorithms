@@ -1,0 +1,58 @@
+rake, 갈퀴
+wheelbarrow, 수레바퀴
+scaffolding, 비계
+scale, 저울
+power outlet, 콘센트
+podium, 연단
+display case, 진열장
+awning, 찬양
+ladder, 사다리
+briefcase, 서류가방
+microscope, 현미경
+forklift, 지게차
+bucket, 양동이
+rack, 받침대
+fountain, 분수대
+fishing rod, 낚시대
+fishing pole, 낚시대
+vase, 꽂병
+broom, 빗자루
+stool, 등받이없는의자
+clipboard, 서류노트
+staircase, 계단
+tap, 수도꼭지
+light fixtures, 조명기구
+musical instruments, 음악악기
+pot, 냄비
+plants, 식물
+cash register, 현금등록기
+lamppost, 가로등
+streetlamp, 가로등
+streetlight, 가로등
+brick, 벽돌
+nail, 못
+cupboard, 찬장
+trash can, 쓰레기통
+tray, 받침대
+shovel, 삽
+backpack, 배낭
+drawer, 서랍
+crate, 나무상자
+tablecloth, 식탁보
+shelves, 선반
+light bulb, 전구
+carton, 종이상자
+lug, 깔개
+business card, 명함
+soil, 흙
+riverbank, 강둑
+railing, 난간
+column, 기둥
+hallway, 복도
+sculpture, 조각상
+concentrate, 집중하다
+beyond, ~너머에
+stir, 젓다
+have been organized, 정리하다
+
+

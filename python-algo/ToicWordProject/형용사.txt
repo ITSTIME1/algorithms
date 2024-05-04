@@ -68,3 +68,11 @@ be accessible by, 접근이가능하다
 be aware of, 인식하다
 be capable of, ~할 수 있다
 be able to do, ~할 수 있다.
+functional, 가동되는
+heavy machinery, 중장비
+innovative, 혁신적인
+prompt, 즉각적인
+upcoming, 다가오는
+inclusive, 포괄적인
+
+
